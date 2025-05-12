@@ -10,6 +10,8 @@ import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
 import NotFound from "@/pages/NotFound";
 import NoPermission from "@/pages/NoPermission";
+import { Button } from "@/components/ui/button";
+import { Users } from "lucide-react";
 
 const queryClient = new QueryClient();
 
