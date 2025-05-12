@@ -8,21 +8,27 @@ import { ptBR } from 'date-fns/locale';
 import { Eye, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ordemServicoService } from '@/services/ordemServicoService';
-import { OrdemServico } from '@/types';
+import { OrdemServico, StatusOS } from '@/types';
 import NovaOrdemServicoDialog from '@/components/NovaOrdemServicoDialog';
 import { Badge } from '@/components/ui/badge';
 
-const StatusBadge = ({ status }: { status: OrdemServico['status'] }) => {
+const StatusBadge = ({ status }: { status: StatusOS }) => {
   const getStatusConfig = () => {
     switch (status) {
-      case 'aberta':
-        return { label: 'Aberta', className: 'bg-blue-500 hover:bg-blue-600' };
       case 'em_andamento':
         return { label: 'Em Andamento', className: 'bg-amber-500 hover:bg-amber-600' };
-      case 'concluida':
-        return { label: 'Concluída', className: 'bg-green-500 hover:bg-green-600' };
-      case 'cancelada':
-        return { label: 'Cancelada', className: 'bg-red-500 hover:bg-red-600' };
+      case 'concluido':
+        return { label: 'Concluído', className: 'bg-green-500 hover:bg-green-600' };
+      case 'em_aprovacao':
+        return { label: 'Em Aprovação', className: 'bg-purple-500 hover:bg-purple-600' };
+      case 'aprovado':
+        return { label: 'Aprovado', className: 'bg-blue-500 hover:bg-blue-600' };
+      case 'faturado':
+        return { label: 'Faturado', className: 'bg-cyan-500 hover:bg-cyan-600' };
+      case 'pago':
+        return { label: 'Pago', className: 'bg-lime-500 hover:bg-lime-600' };
+      case 'cancelado':
+        return { label: 'Cancelado', className: 'bg-red-500 hover:bg-red-600' };
       default:
         return { label: status, className: 'bg-gray-500 hover:bg-gray-600' };
     }
