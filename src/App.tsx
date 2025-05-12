@@ -16,6 +16,8 @@ import Clientes from "@/pages/Clientes";
 import DetalhesCliente from "@/pages/DetalhesCliente";
 import OrdensServico from "@/pages/OrdensServico";
 import DetalhesOrdemServico from "@/pages/DetalhesOrdemServico";
+import Orcamentos from "@/pages/Orcamentos";
+import DetalhesOrcamento from "@/pages/DetalhesOrcamento";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +79,8 @@ const App = () => (
               <Route path="/clientes/:id" element={<DetalhesCliente />} />
               <Route path="/ordens-servico" element={<OrdensServico />} />
               <Route path="/ordens-servico/:id" element={<DetalhesOrdemServico />} />
+              <Route path="/orcamentos" element={<Orcamentos />} />
+              <Route path="/orcamentos/:id" element={<DetalhesOrcamento />} />
             </Route>
             
             {/* Rotas protegidas para gestores */}

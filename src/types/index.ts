@@ -55,3 +55,41 @@ export interface Orcamento {
   aprovado: boolean;
   dataAprovacao?: string;
 }
+
+// Novas interfaces para o sistema de orçamentos detalhados
+export interface DanoVeiculo {
+  pecaId: string;
+  amassados: {
+    mm20: number;
+    mm30: number;
+    mm40: number;
+  };
+  materiais: {
+    aluminio: boolean; // A
+    cola: boolean;     // K
+    pintura: boolean;  // P
+  };
+}
+
+export interface OrcamentoDetalhado {
+  id: string;
+  data: string;
+  clienteId: string;
+  veiculo: string;
+  placa?: string;
+  chassi?: string;
+  danos: DanoVeiculo[];
+  foto?: string;
+  totalAW: number;
+  precoEuro: number;
+}
+
+export interface PecaVeiculo {
+  id: string;
+  nome: string;
+  posicao: {
+    linha: number;
+    coluna: number;
+  };
+}
+
