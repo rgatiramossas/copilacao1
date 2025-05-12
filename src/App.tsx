@@ -35,8 +35,32 @@ const App = () => (
             <Route 
               element={<ProtectedRoute allowedRoles={['administrador']} />}
             >
+              <Route path="/configuracoes" element={
+                <div className="p-4">
+                  <h2 className="text-xl font-semibold mb-6">Configurações do Sistema</h2>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-white rounded-lg shadow p-4">
+                      <h3 className="text-lg font-medium mb-2">Gerenciamento de Usuários</h3>
+                      <p className="text-gray-600 mb-3">Adicionar, editar ou remover usuários do sistema</p>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start" 
+                        onClick={() => window.location.href = '/usuarios'}
+                      >
+                        <Users className="mr-2 h-4 w-4" />
+                        Gerenciar Usuários
+                      </Button>
+                    </div>
+                    
+                    <div className="bg-white rounded-lg shadow p-4">
+                      <h3 className="text-lg font-medium mb-2">Configurações Gerais</h3>
+                      <p className="text-gray-600">Ajustes gerais do sistema e preferências</p>
+                    </div>
+                  </div>
+                </div>
+              } />
               <Route path="/usuarios" element={<div className="p-4">Gerenciamento de Usuários</div>} />
-              <Route path="/configuracoes" element={<div className="p-4">Configurações do Sistema</div>} />
             </Route>
             
             {/* Rotas protegidas para admin e técnicos */}

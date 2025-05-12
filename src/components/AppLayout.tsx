@@ -45,18 +45,11 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     
     const adminItems = [
       <BottomNavItem 
-        key="users" 
-        to="/usuarios" 
-        label="Usuários" 
-        icon={<Users size={20} />} 
-        active={isActive('/usuarios')} 
-      />,
-      <BottomNavItem 
         key="settings" 
         to="/configuracoes" 
         label="Config." 
         icon={<Settings size={20} />} 
-        active={isActive('/configuracoes')} 
+        active={isActive('/configuracoes') || isActive('/usuarios')} 
       />
     ];
 
