@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { OrdemServico } from '@/types';
+import { OrdemServico, StatusOS } from '@/types';
 import { ordemServicoService } from '@/services/ordemServicoService';
 import { clienteService } from '@/services/clienteService';
 import { cn } from '@/lib/utils';
@@ -34,7 +34,7 @@ const formSchema = z.object({
   observacoes: z.string().optional(),
   precoTecnico: z.number().optional(),
   precoAdministrativo: z.number().optional(),
-  status: z.enum(['aberta', 'em_andamento', 'concluida', 'cancelada']),
+  status: z.enum(['em_andamento', 'concluido', 'em_aprovacao', 'aprovado', 'faturado', 'pago', 'cancelado']),
 }).refine(data => data.placa || data.chassi, {
   message: 'Pelo menos um dos campos (Placa ou Chassi) deve ser preenchido',
   path: ['placa'],
@@ -58,7 +58,8 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
   const [fotos, setFotos] = useState<string[]>(ordem.fotos || []);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const { userRole } = useAuth();
-  const isAdmin = userRole === 'administrador';
+  const isAdmin = userRole === 'administrador' || userRole === 'gestor';
+  const isTecnico = userRole === 'tecnico';
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -124,6 +125,20 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
       return;
     }
     
+    // Verificar se o usuário tem permissão para mudar o status
+    if (values.status !== ordem.status) {
+      const podeMudar = ordemServicoService.podeMudarStatusOS(
+        userRole || '',
+        ordem.status,
+        values.status
+      );
+      
+      if (!podeMudar) {
+        toast.error('Você não tem permissão para mudar o status desta ordem de serviço');
+        return;
+      }
+    }
+    
     try {
       const osAtualizada = ordemServicoService.updateOrdemServico(ordem.id, {
         clienteId: values.clienteId,
@@ -149,6 +164,42 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
       console.error(error);
     }
   };
+
+  // Define opções de status disponíveis com base no perfil do usuário e status atual
+  const getStatusOptions = () => {
+    if (isAdmin) {
+      // Administradores e gestores podem selecionar qualquer status
+      return [
+        { value: 'em_andamento', label: 'Em Andamento' },
+        { value: 'concluido', label: 'Concluído' },
+        { value: 'em_aprovacao', label: 'Em Aprovação' },
+        { value: 'aprovado', label: 'Aprovado' },
+        { value: 'faturado', label: 'Faturado' },
+        { value: 'pago', label: 'Pago' },
+        { value: 'cancelado', label: 'Cancelado' }
+      ];
+    } else if (isTecnico) {
+      // Técnicos têm opções limitadas de acordo com o status atual
+      if (ordem.status === 'em_andamento') {
+        return [
+          { value: 'em_andamento', label: 'Em Andamento' },
+          { value: 'concluido', label: 'Concluído' }
+        ];
+      } else {
+        // Se já está concluído, não pode mudar o status
+        return [
+          { value: ordem.status, label: ordem.status === 'concluido' ? 'Concluído' : 'Em Andamento' }
+        ];
+      }
+    }
+    
+    // Default
+    return [
+      { value: ordem.status, label: 'Status atual' }
+    ];
+  };
+  
+  const statusOptions = getStatusOptions();
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -170,6 +221,7 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                     <Select 
                       onValueChange={field.onChange} 
                       value={field.value}
+                      disabled={isTecnico && ordem.status !== 'em_andamento'}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -205,6 +257,7 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                               "w-full pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground"
                             )}
+                            disabled={isTecnico && ordem.status !== 'em_andamento'}
                           >
                             {field.value ? (
                               format(field.value, "dd/MM/yyyy", { locale: ptBR })
@@ -247,10 +300,11 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="aberta">Aberta</SelectItem>
-                        <SelectItem value="em_andamento">Em Andamento</SelectItem>
-                        <SelectItem value="concluida">Concluída</SelectItem>
-                        <SelectItem value="cancelada">Cancelada</SelectItem>
+                        {statusOptions.map(option => (
+                          <SelectItem key={option.value} value={option.value as StatusOS}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -268,6 +322,7 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                     <Select 
                       onValueChange={field.onChange} 
                       value={field.value}
+                      disabled={isTecnico && ordem.status !== 'em_andamento'}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -293,7 +348,11 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                   <FormItem className="sm:col-span-2">
                     <FormLabel>Veículo*</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: Volkswagen Golf 2020" {...field} />
+                      <Input 
+                        placeholder="Ex: Volkswagen Golf 2020" 
+                        {...field}
+                        disabled={isTecnico && ordem.status !== 'em_andamento'} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -308,7 +367,11 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                   <FormItem>
                     <FormLabel>Placa</FormLabel>
                     <FormControl>
-                      <Input placeholder="Placa do veículo" {...field} />
+                      <Input 
+                        placeholder="Placa do veículo" 
+                        {...field} 
+                        disabled={isTecnico && ordem.status !== 'em_andamento'} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -323,7 +386,11 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                   <FormItem>
                     <FormLabel>Chassi</FormLabel>
                     <FormControl>
-                      <Input placeholder="Número do chassi" {...field} />
+                      <Input 
+                        placeholder="Número do chassi" 
+                        {...field} 
+                        disabled={isTecnico && ordem.status !== 'em_andamento'} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -347,6 +414,7 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                           field.onChange(value);
                         }}
                         value={field.value || ''}
+                        disabled={isTecnico && ordem.status !== 'em_andamento'}
                       />
                     </FormControl>
                     <FormMessage />
@@ -415,6 +483,7 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                         accept="image/*" 
                         multiple 
                         onChange={handleFotoUpload}
+                        disabled={isTecnico && ordem.status !== 'em_andamento'}
                       />
                     </label>
                   </div>
@@ -433,6 +502,7 @@ const EditarOrdemServicoDialog: React.FC<EditarOrdemServicoDialogProps> = ({
                           type="button"
                           onClick={() => removerFoto(index)}
                           className="absolute top-1 right-1 bg-destructive text-white rounded-full p-1"
+                          disabled={isTecnico && ordem.status !== 'em_andamento'}
                         >
                           <X className="h-3 w-3" />
                         </button>

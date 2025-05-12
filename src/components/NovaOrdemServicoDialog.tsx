@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -14,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { OrdemServico } from '@/types';
+import { OrdemServico, StatusOS } from '@/types';
 import { ordemServicoService } from '@/services/ordemServicoService';
 import { clienteService } from '@/services/clienteService';
 import { cn } from '@/lib/utils';
@@ -111,7 +110,7 @@ const NovaOrdemServicoDialog: React.FC<NovaOrdemServicoDialogProps> = ({
         observacoes: values.observacoes,
         precoTecnico: values.precoTecnico,
         precoAdministrativo: isAdmin ? values.precoAdministrativo : undefined,
-        status: 'aberta',
+        status: 'em_andamento' as StatusOS, // Status padrão é sempre "em_andamento"
         tecnicoId: '1', // Em um sistema real, seria o ID do técnico logado
       });
       

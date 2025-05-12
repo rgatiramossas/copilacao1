@@ -21,6 +21,15 @@ export interface Cliente {
   gestorId?: string;
 }
 
+export type StatusOS = 
+  | 'em_andamento' 
+  | 'concluido' 
+  | 'em_aprovacao' 
+  | 'aprovado' 
+  | 'faturado' 
+  | 'pago' 
+  | 'cancelado';
+
 export interface OrdemServico {
   id: string;
   clienteId: string;
@@ -33,7 +42,7 @@ export interface OrdemServico {
   observacoes?: string;
   precoTecnico?: number;
   precoAdministrativo?: number;
-  status: 'aberta' | 'em_andamento' | 'concluida' | 'cancelada';
+  status: StatusOS;
   tecnicoId?: string;
   dataEncerramento?: string;
 }

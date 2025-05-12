@@ -1,5 +1,5 @@
 
-import { OrdemServico } from '@/types';
+import { OrdemServico, StatusOS } from '@/types';
 
 // Mock de ordens de serviço para teste
 let ordensServico: OrdemServico[] = [
@@ -15,7 +15,7 @@ let ordensServico: OrdemServico[] = [
     observacoes: 'Danos no capô e teto',
     precoTecnico: 250,
     precoAdministrativo: 350,
-    status: 'aberta',
+    status: 'em_andamento',
     tecnicoId: '1',
   },
   {
@@ -42,7 +42,7 @@ let ordensServico: OrdemServico[] = [
     observacoes: 'Reparo na lateral',
     precoTecnico: 350,
     precoAdministrativo: 500,
-    status: 'concluida',
+    status: 'concluido',
     tecnicoId: '2',
     dataEncerramento: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
   }
@@ -69,7 +69,7 @@ export const ordemServicoService = {
     const novaOS = {
       ...os,
       id: Date.now().toString(), // Gera ID simples baseado no timestamp
-      status: os.status || 'aberta' // Status padrão se não for fornecido
+      status: 'em_andamento' as StatusOS // Status padrão para nova OS é sempre "em_andamento"
     };
     
     ordensServico = [...ordensServico, novaOS];
@@ -84,6 +84,28 @@ export const ordemServicoService = {
     const osAtualizada = { ...ordensServico[index], ...dadosAtualizados };
     ordensServico[index] = osAtualizada;
     return osAtualizada;
+  },
+
+  // Verificar se um usuário pode editar uma OS baseado em seu papel e no status da OS
+  podeEditarOS: (userRole: string, statusOS: StatusOS): boolean => {
+    if (userRole === 'administrador' || userRole === 'gestor') {
+      return true; // Administradores e gestores podem editar qualquer OS
+    } else if (userRole === 'tecnico') {
+      // Técnicos só podem editar OS em andamento ou concluídas
+      return ['em_andamento', 'concluido'].includes(statusOS);
+    }
+    return false;
+  },
+
+  // Verificar se um usuário pode mudar o status de uma OS
+  podeMudarStatusOS: (userRole: string, statusAtual: StatusOS, novoStatus: StatusOS): boolean => {
+    if (userRole === 'administrador' || userRole === 'gestor') {
+      return true; // Administradores e gestores podem mudar qualquer status
+    } else if (userRole === 'tecnico') {
+      // Técnicos só podem mudar de "em_andamento" para "concluido"
+      return statusAtual === 'em_andamento' && novoStatus === 'concluido';
+    }
+    return false;
   },
 
   // Remover uma OS

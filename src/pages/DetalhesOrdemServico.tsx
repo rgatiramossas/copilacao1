@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
@@ -5,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ordemServicoService } from '@/services/ordemServicoService';
 import { clienteService } from '@/services/clienteService';
-import { OrdemServico, Cliente } from '@/types';
+import { OrdemServico, Cliente, StatusOS } from '@/types';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Edit, Trash2, FileText } from 'lucide-react';
@@ -58,6 +59,9 @@ const DetalhesOrdemServico = () => {
       </AppLayout>
     );
   }
+
+  // Verificar permissões do usuário
+  const podeEditar = ordemServicoService.podeEditarOS(userRole || '', ordem.status);
   
   const formatarData = (dataString?: string) => {
     if (!dataString) return '-';
@@ -68,22 +72,28 @@ const DetalhesOrdemServico = () => {
     }
   };
   
-  const getStatusLabel = (status: OrdemServico['status']) => {
+  const getStatusLabel = (status: StatusOS) => {
     switch (status) {
-      case 'aberta': return 'Aberta';
       case 'em_andamento': return 'Em Andamento';
-      case 'concluida': return 'Concluída';
-      case 'cancelada': return 'Cancelada';
+      case 'concluido': return 'Concluído';
+      case 'em_aprovacao': return 'Em Aprovação';
+      case 'aprovado': return 'Aprovado';
+      case 'faturado': return 'Faturado';
+      case 'pago': return 'Pago';
+      case 'cancelado': return 'Cancelado';
       default: return status;
     }
   };
   
-  const getStatusClassName = (status: OrdemServico['status']) => {
+  const getStatusClassName = (status: StatusOS) => {
     switch (status) {
-      case 'aberta': return 'bg-blue-500 hover:bg-blue-600';
       case 'em_andamento': return 'bg-amber-500 hover:bg-amber-600';
-      case 'concluida': return 'bg-green-500 hover:bg-green-600';
-      case 'cancelada': return 'bg-red-500 hover:bg-red-600';
+      case 'concluido': return 'bg-blue-500 hover:bg-blue-600';
+      case 'em_aprovacao': return 'bg-purple-500 hover:bg-purple-600';
+      case 'aprovado': return 'bg-green-500 hover:bg-green-600';
+      case 'faturado': return 'bg-cyan-500 hover:bg-cyan-600';
+      case 'pago': return 'bg-lime-500 hover:bg-lime-600';
+      case 'cancelado': return 'bg-red-500 hover:bg-red-600';
       default: return 'bg-gray-500';
     }
   };
@@ -124,14 +134,18 @@ const DetalhesOrdemServico = () => {
           </Badge>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handleEditar}>
-            <Edit className="h-4 w-4 mr-2" />
-            Editar
-          </Button>
-          <Button variant="destructive" onClick={handleExcluir}>
-            <Trash2 className="h-4 w-4 mr-2" />
-            Excluir
-          </Button>
+          {podeEditar && (
+            <>
+              <Button variant="outline" onClick={handleEditar}>
+                <Edit className="h-4 w-4 mr-2" />
+                Editar
+              </Button>
+              <Button variant="destructive" onClick={handleExcluir}>
+                <Trash2 className="h-4 w-4 mr-2" />
+                Excluir
+              </Button>
+            </>
+          )}
         </div>
       </div>
       
@@ -276,12 +290,14 @@ const DetalhesOrdemServico = () => {
         </Card>
       </div>
       
-      <EditarOrdemServicoDialog
-        isOpen={dialogEditarAberta}
-        onClose={() => setDialogEditarAberta(false)}
-        ordem={ordem}
-        onSucesso={onOSAtualizada}
-      />
+      {podeEditar && (
+        <EditarOrdemServicoDialog
+          isOpen={dialogEditarAberta}
+          onClose={() => setDialogEditarAberta(false)}
+          ordem={ordem}
+          onSucesso={onOSAtualizada}
+        />
+      )}
     </AppLayout>
   );
 };
