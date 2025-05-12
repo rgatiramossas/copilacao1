@@ -14,6 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Users } from "lucide-react";
 import Clientes from "@/pages/Clientes";
 import DetalhesCliente from "@/pages/DetalhesCliente";
+import OrdensServico from "@/pages/OrdensServico";
+import DetalhesOrdemServico from "@/pages/DetalhesOrdemServico";
 
 const queryClient = new QueryClient();
 
@@ -73,7 +75,8 @@ const App = () => (
             >
               <Route path="/clientes" element={<Clientes />} />
               <Route path="/clientes/:id" element={<DetalhesCliente />} />
-              <Route path="/ordens-servico" element={<div className="p-4">Todas as ordens de serviço</div>} />
+              <Route path="/ordens-servico" element={<OrdensServico />} />
+              <Route path="/ordens-servico/:id" element={<DetalhesOrdemServico />} />
             </Route>
             
             {/* Rotas protegidas para gestores */}

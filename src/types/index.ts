@@ -24,14 +24,18 @@ export interface Cliente {
 export interface OrdemServico {
   id: string;
   clienteId: string;
-  tecnicoId: string;
   dataAbertura: string;
-  dataEncerramento?: string;
-  descricao: string;
+  veiculo: string;
+  placa?: string;
+  chassi?: string;
+  tipoServico: 'Granizo' | 'Amassado de Rua' | 'Outros';
+  fotos: string[];
+  observacoes?: string;
+  precoTecnico?: number;
+  precoAdministrativo?: number;
   status: 'aberta' | 'em_andamento' | 'concluida' | 'cancelada';
-  valorOrcamento?: number;
-  valorFinal?: number;
-  fotos?: string[];
+  tecnicoId?: string;
+  dataEncerramento?: string;
 }
 
 export interface Orcamento {
