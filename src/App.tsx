@@ -12,6 +12,8 @@ import NotFound from "@/pages/NotFound";
 import NoPermission from "@/pages/NoPermission";
 import { Button } from "@/components/ui/button";
 import { Users } from "lucide-react";
+import Clientes from "@/pages/Clientes";
+import DetalhesCliente from "@/pages/DetalhesCliente";
 
 const queryClient = new QueryClient();
 
@@ -69,7 +71,8 @@ const App = () => (
             <Route 
               element={<ProtectedRoute allowedRoles={['administrador', 'tecnico']} />}
             >
-              <Route path="/clientes" element={<div className="p-4">Lista de todos os clientes</div>} />
+              <Route path="/clientes" element={<Clientes />} />
+              <Route path="/clientes/:id" element={<DetalhesCliente />} />
               <Route path="/ordens-servico" element={<div className="p-4">Todas as ordens de serviço</div>} />
             </Route>
             
