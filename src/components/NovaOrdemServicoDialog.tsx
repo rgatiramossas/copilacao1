@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -16,6 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { OrdemServico, StatusOS } from '@/types';
 import { ordemServicoService } from '@/services/ordemServicoService';
 import { clienteService } from '@/services/clienteService';
+import { tecnicoService } from '@/services/tecnicoService';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
@@ -30,6 +31,7 @@ const formSchema = z.object({
   tipoServico: z.enum(['Granizo', 'Amassado de Rua', 'Outros'], {
     required_error: 'Tipo de serviço é obrigatório',
   }),
+  tecnicoId: z.string().min(1, 'Técnico responsável é obrigatório'),
   observacoes: z.string().optional(),
   precoTecnico: z.number().optional(),
   precoAdministrativo: z.number().optional(),
@@ -53,8 +55,12 @@ const NovaOrdemServicoDialog: React.FC<NovaOrdemServicoDialogProps> = ({
 }) => {
   const [fotos, setFotos] = useState<string[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const { userRole } = useAuth();
+  const { user, userRole } = useAuth();
   const isAdmin = userRole === 'administrador';
+  const tecnicos = tecnicoService.getTecnicos();
+  
+  // Encontrar o técnico logado ou usar o primeiro técnico como fallback
+  const loggedInTecnico = user ? tecnicoService.getTecnicoByEmail(user.email) || tecnicos[0] : tecnicos[0];
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,9 +70,17 @@ const NovaOrdemServicoDialog: React.FC<NovaOrdemServicoDialogProps> = ({
       placa: '',
       chassi: '',
       tipoServico: 'Granizo' as const,
+      tecnicoId: '', // Será preenchido no useEffect
       observacoes: '',
     },
   });
+  
+  // Definir o técnico responsável automaticamente com base no usuário logado
+  useEffect(() => {
+    if (loggedInTecnico) {
+      form.setValue('tecnicoId', loggedInTecnico.id);
+    }
+  }, [form, loggedInTecnico]);
   
   const clientes = clienteService.getClientes();
   
@@ -111,7 +125,7 @@ const NovaOrdemServicoDialog: React.FC<NovaOrdemServicoDialogProps> = ({
         precoTecnico: values.precoTecnico,
         precoAdministrativo: isAdmin ? values.precoAdministrativo : undefined,
         status: 'em_andamento' as StatusOS, // Status padrão é sempre "em_andamento"
-        tecnicoId: '1', // Em um sistema real, seria o ID do técnico logado
+        tecnicoId: values.tecnicoId, // Agora usamos o técnico selecionado no formulário
       });
       
       toast.success('Ordem de serviço criada com sucesso!');
@@ -154,6 +168,35 @@ const NovaOrdemServicoDialog: React.FC<NovaOrdemServicoDialogProps> = ({
                         {clientes.map(cliente => (
                           <SelectItem key={cliente.id} value={cliente.id}>
                             {cliente.nome}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Técnico Responsável - NOVO CAMPO */}
+              <FormField
+                control={form.control}
+                name="tecnicoId"
+                render={({ field }) => (
+                  <FormItem className="sm:col-span-2">
+                    <FormLabel>Técnico Responsável*</FormLabel>
+                    <Select 
+                      onValueChange={field.onChange} 
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um técnico" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {tecnicos.map(tecnico => (
+                          <SelectItem key={tecnico.id} value={tecnico.id}>
+                            {tecnico.nome}
                           </SelectItem>
                         ))}
                       </SelectContent>
