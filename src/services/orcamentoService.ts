@@ -1,5 +1,5 @@
 
-import { OrcamentoDetalhado, PecaVeiculo } from '@/types';
+import { OrcamentoDetalhado, PecaVeiculo, DanoVeiculo } from '@/types';
 
 // Define as peças do veículo para o grid
 export const pecasVeiculo: PecaVeiculo[] = [
@@ -132,40 +132,41 @@ export const orcamentoService = {
   // Calcular o valor total do orçamento
   calcularValorTotal: (danos: DanoVeiculo[]): { totalAW: number; precoEuro: number } => {
     // Preço base por tamanho de amassado (exemplo)
-    const precoBase = {
+    const precoPorTamanho = {
       mm20: 15, // 15 euros por amassado de 20mm
       mm30: 25, // 25 euros por amassado de 30mm
       mm40: 40, // 40 euros por amassado de 40mm
     };
     
     let totalAW = 0;
-    let precoBase = 0;
+    let valorTotal = 0;
     
     danos.forEach(dano => {
       // Soma quantidade de amassados (cada amassado é 1 AW)
       totalAW += dano.amassados.mm20 + dano.amassados.mm30 + dano.amassados.mm40;
       
-      // Calcula preço base
-      precoBase += dano.amassados.mm20 * 15;
-      precoBase += dano.amassados.mm30 * 25;
-      precoBase += dano.amassados.mm40 * 40;
+      // Calcula preço base para cada dano
+      let precoDano = 0;
+      precoDano += dano.amassados.mm20 * precoPorTamanho.mm20;
+      precoDano += dano.amassados.mm30 * precoPorTamanho.mm30;
+      precoDano += dano.amassados.mm40 * precoPorTamanho.mm40;
       
       // Aplica adicionais por material especial
       if (dano.materiais.aluminio) {
-        precoBase *= 1.25; // +25% para alumínio
+        precoDano *= 1.25; // +25% para alumínio
       }
       
       if (dano.materiais.cola) {
-        precoBase *= 1.3; // +30% para cola
+        precoDano *= 1.3; // +30% para cola
       }
       
-      // Não aplicamos alteração de preço para pintura neste exemplo simples
+      // Adiciona o valor deste dano ao total
+      valorTotal += precoDano;
     });
     
     return {
       totalAW,
-      precoEuro: precoBase
+      precoEuro: valorTotal
     };
   }
 };
-
