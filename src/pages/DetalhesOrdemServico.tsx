@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
@@ -14,13 +13,12 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/AuthContext';
 import EditarOrdemServicoDialog from '@/components/EditarOrdemServicoDialog';
-import { useToast } from 'sonner';
+import { toast } from 'sonner';
 
 const DetalhesOrdemServico = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { userRole } = useAuth();
-  const toast = useToast();
   
   const [ordem, setOrdem] = useState<OrdemServico | null>(null);
   const [cliente, setCliente] = useState<Cliente | null>(null);
