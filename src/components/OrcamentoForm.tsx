@@ -678,6 +678,20 @@ interface DanoPecaEditorProps {
 }
 
 function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = false }: DanoPecaEditorProps) {
+  // Funções para lidar com o foco e desfoco dos inputs
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value === "0") {
+      e.target.value = "";
+    }
+  };
+  
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>, tamanho: keyof DanoVeiculo['amassados']) => {
+    if (e.target.value === "") {
+      e.target.value = "0";
+      onChange(tamanho, 0);
+    }
+  };
+
   return (
     <div className="space-y-3">
       {/* Amassados */}
@@ -688,6 +702,8 @@ function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = false }: 
             type="number"
             value={dano.amassados.mm20}
             onChange={(e) => onChange('mm20', parseInt(e.target.value) || 0)}
+            onFocus={handleFocus}
+            onBlur={(e) => handleBlur(e, 'mm20')}
             className="w-16 text-center p-1 h-8"
             min={0}
             disabled={disabled}
@@ -699,6 +715,8 @@ function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = false }: 
             type="number"
             value={dano.amassados.mm30}
             onChange={(e) => onChange('mm30', parseInt(e.target.value) || 0)}
+            onFocus={handleFocus}
+            onBlur={(e) => handleBlur(e, 'mm30')}
             className="w-16 text-center p-1 h-8"
             min={0}
             disabled={disabled}
@@ -710,6 +728,8 @@ function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = false }: 
             type="number"
             value={dano.amassados.mm40}
             onChange={(e) => onChange('mm40', parseInt(e.target.value) || 0)}
+            onFocus={handleFocus}
+            onBlur={(e) => handleBlur(e, 'mm40')}
             className="w-16 text-center p-1 h-8"
             min={0}
             disabled={disabled}
