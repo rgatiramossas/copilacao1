@@ -94,8 +94,7 @@ export default function Orcamentos() {
   return (
     <AppLayout>
       <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          {/* Removed the duplicate "Orçamentos" heading here */}
+        <div className="flex justify-end items-center mb-6">
           <Button onClick={handleNovoOrcamento}>
             <Plus className="mr-2 h-4 w-4" />
             Novo Orçamento

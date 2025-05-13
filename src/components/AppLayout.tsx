@@ -55,7 +55,8 @@ const AppLayout: React.FC<{
               {location.pathname === '/ordens-servico' && 'Ordens de Serviço'}
               {location.pathname === '/minhas-ordens' && 'Minhas Ordens'}
               {location.pathname === '/configuracoes' && 'Configurações'}
-              {location.pathname.startsWith('/orcamentos') && 'Orçamentos'}
+              {location.pathname === '/orcamentos' && 'Orçamentos'}
+              {location.pathname.includes('/orcamentos/') && 'Orçamentos'}
             </h2>
             
             <div className="flex items-center space-x-3">
