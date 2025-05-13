@@ -95,7 +95,7 @@ export default function Orcamentos() {
     <AppLayout>
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Orçamentos</h1>
+          {/* Removed the duplicate "Orçamentos" heading here */}
           <Button onClick={handleNovoOrcamento}>
             <Plus className="mr-2 h-4 w-4" />
             Novo Orçamento
