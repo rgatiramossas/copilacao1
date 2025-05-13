@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Home, Users, ClipboardList, LogOut, UserCircle, Settings } from 'lucide-react';
+import { Home, ClipboardList, LogOut, UserCircle, FileText } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 
@@ -24,76 +24,11 @@ const BottomNavItem = ({ to, label, icon, active }: BottomNavItemProps) => {
 };
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, logout, userRole } = useAuth();
+  const { user, logout } = useAuth();
   const location = useLocation();
 
   const isActive = (path: string) => {
     return location.pathname === path;
-  };
-
-  // Renderiza os itens do menu baseado no papel do usuário
-  const renderBottomNavItems = () => {
-    const baseItems = [
-      <BottomNavItem 
-        key="home" 
-        to="/dashboard" 
-        label="Início" 
-        icon={<Home size={20} />} 
-        active={isActive('/dashboard')} 
-      />
-    ];
-    
-    const adminItems = [
-      <BottomNavItem 
-        key="settings" 
-        to="/configuracoes" 
-        label="Config." 
-        icon={<Settings size={20} />} 
-        active={isActive('/configuracoes') || isActive('/usuarios')} 
-      />
-    ];
-
-    const commonItems = [
-      <BottomNavItem 
-        key="clients" 
-        to="/clientes" 
-        label="Clientes" 
-        icon={<UserCircle size={20} />} 
-        active={isActive('/clientes')} 
-      />,
-      <BottomNavItem 
-        key="orders" 
-        to="/ordens-servico" 
-        label="Ordens" 
-        icon={<ClipboardList size={20} />} 
-        active={isActive('/ordens-servico')} 
-      />
-    ];
-
-    const gestorItems = [
-      <BottomNavItem 
-        key="clients" 
-        to="/meus-clientes" 
-        label="Clientes" 
-        icon={<UserCircle size={20} />} 
-        active={isActive('/meus-clientes')} 
-      />,
-      <BottomNavItem 
-        key="orders" 
-        to="/minhas-ordens" 
-        label="Ordens" 
-        icon={<ClipboardList size={20} />} 
-        active={isActive('/minhas-ordens')} 
-      />
-    ];
-
-    if (userRole === 'administrador') {
-      return [...baseItems, ...commonItems, ...adminItems];
-    } else if (userRole === 'tecnico') {
-      return [...baseItems, ...commonItems];
-    } else {
-      return [...baseItems, ...gestorItems];
-    }
   };
 
   return (
@@ -112,6 +47,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               {location.pathname === '/ordens-servico' && 'Ordens de Serviço'}
               {location.pathname === '/minhas-ordens' && 'Minhas Ordens'}
               {location.pathname === '/configuracoes' && 'Configurações'}
+              {location.pathname === '/orcamentos' && 'Orçamentos'}
             </h2>
             
             <div className="flex items-center">
@@ -128,11 +64,40 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </main>
       
-      {/* Menu inferior fixo para TODOS os dispositivos */}
+      {/* Menu inferior simplificado com apenas 4 itens + logout */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-16 flex justify-around items-center z-40">
-        {renderBottomNavItems()}
+        <BottomNavItem 
+          key="home" 
+          to="/dashboard" 
+          label="Início" 
+          icon={<Home size={20} />} 
+          active={isActive('/dashboard')} 
+        />
         
-        {/* Botão de logout no menu inferior */}
+        <BottomNavItem 
+          key="clients" 
+          to="/clientes" 
+          label="Clientes" 
+          icon={<UserCircle size={20} />} 
+          active={isActive('/clientes') || isActive('/meus-clientes')} 
+        />
+        
+        <BottomNavItem 
+          key="orders" 
+          to="/ordens-servico" 
+          label="Ordens" 
+          icon={<ClipboardList size={20} />} 
+          active={isActive('/ordens-servico') || isActive('/minhas-ordens')} 
+        />
+        
+        <BottomNavItem 
+          key="budgets" 
+          to="/orcamentos" 
+          label="Orçamentos" 
+          icon={<FileText size={20} />} 
+          active={isActive('/orcamentos')} 
+        />
+        
         <button 
           onClick={logout}
           className="flex flex-col items-center justify-center text-red-500"
