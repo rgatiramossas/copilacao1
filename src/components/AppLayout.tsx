@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Home, ClipboardList, LogOut, UserCircle, FileText } from 'lucide-react';
+import { Home, ClipboardList, LogOut, UserCircle, FileText, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 
@@ -50,9 +50,23 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               {location.pathname === '/orcamentos' && 'Orçamentos'}
             </h2>
             
-            <div className="flex items-center">
-              <div className="h-8 w-8 rounded-full bg-blue-deep flex items-center justify-center text-white">
-                {user?.nome?.charAt(0) || 'U'}
+            <div className="flex items-center space-x-3">
+              <Link to="/configuracoes" className="text-gray-600 hover:text-primary">
+                <Settings size={20} />
+              </Link>
+              <div className="flex items-center relative group">
+                <div className="h-8 w-8 rounded-full bg-blue-deep flex items-center justify-center text-white cursor-pointer">
+                  {user?.nome?.charAt(0) || 'U'}
+                </div>
+                <div className="absolute top-full right-0 mt-1 hidden group-hover:block bg-white border shadow-lg rounded-md p-2 w-32 z-50">
+                  <button 
+                    onClick={logout}
+                    className="flex items-center space-x-2 w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md text-red-500"
+                  >
+                    <LogOut size={16} />
+                    <span>Sair</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
