@@ -1,14 +1,17 @@
+
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Home, ClipboardList, LogOut, UserCircle, FileText, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+
 interface BottomNavItemProps {
   to: string;
   label: string;
   icon: React.ReactNode;
   active?: boolean;
 }
+
 const BottomNavItem = ({
   to,
   label,
@@ -22,6 +25,7 @@ const BottomNavItem = ({
       </div>
     </Link>;
 };
+
 const AppLayout: React.FC<{
   children: React.ReactNode;
 }> = ({
@@ -35,6 +39,7 @@ const AppLayout: React.FC<{
   const isActive = (path: string) => {
     return location.pathname === path;
   };
+  
   return <div className="flex flex-col h-screen bg-gray-50">
       {/* Conteúdo principal */}
       <main className="flex-1 flex flex-col overflow-hidden pb-16">
@@ -50,7 +55,7 @@ const AppLayout: React.FC<{
               {location.pathname === '/ordens-servico' && 'Ordens de Serviço'}
               {location.pathname === '/minhas-ordens' && 'Minhas Ordens'}
               {location.pathname === '/configuracoes' && 'Configurações'}
-              {location.pathname === '/orcamentos' && 'Orçamentos'}
+              {location.pathname.startsWith('/orcamentos') && 'Orçamentos'}
             </h2>
             
             <div className="flex items-center space-x-3">
@@ -86,7 +91,7 @@ const AppLayout: React.FC<{
         
         <BottomNavItem key="orders" to="/ordens-servico" label="Ordens" icon={<ClipboardList size={20} />} active={isActive('/ordens-servico') || isActive('/minhas-ordens')} />
         
-        <BottomNavItem key="budgets" to="/orcamentos" label="Orçamentos" icon={<FileText size={20} />} active={isActive('/orcamentos')} />
+        <BottomNavItem key="budgets" to="/orcamentos" label="Orçamentos" icon={<FileText size={20} />} active={location.pathname.startsWith('/orcamentos')} />
         
         <button onClick={logout} className="flex flex-col items-center justify-center text-red-500">
           <div className="flex flex-col items-center p-2">
@@ -97,4 +102,5 @@ const AppLayout: React.FC<{
       </nav>
     </div>;
 };
+
 export default AppLayout;
