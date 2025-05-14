@@ -226,7 +226,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden bg-gray-50">
+    <div className="flex flex-col h-screen bg-gray-50">
       <div className="bg-white p-4 shadow-sm">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
@@ -243,8 +243,8 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
-          <div className="flex-1 overflow-y-auto bg-white px-4 py-5 sm:p-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col flex-1">
+          <div className="flex-1 bg-white px-4 py-5 sm:p-6">
           {/* Cabeçalho do formulário */}
           <OrcamentoCabecalho 
             form={form} 
