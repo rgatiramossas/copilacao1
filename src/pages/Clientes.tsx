@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { clienteService } from '@/services/clienteService';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AdicionarClienteForm from '@/components/AdicionarClienteForm';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Clientes = () => {
   const navigate = useNavigate();
@@ -15,28 +16,25 @@ const Clientes = () => {
   const [dialogAberto, setDialogAberto] = useState(false);
   const [clientesData, setClientesData] = useState(clienteService.getClientes());
 
-  // Filtrar clientes com base no termo de busca
   const clientesFiltrados = clientesData.filter(cliente => 
     cliente.nome.toLowerCase().includes(busca.toLowerCase()) ||
     cliente.email?.toLowerCase().includes(busca.toLowerCase()) ||
     cliente.telefone?.toLowerCase().includes(busca.toLowerCase())
   );
 
-  // Função para adicionar um novo cliente
   const handleAdicionarCliente = () => {
     setDialogAberto(true);
   };
 
-  // Função para atualizar a lista de clientes após adicionar um novo
   const atualizarListaClientes = () => {
     setClientesData(clienteService.getClientes());
     setDialogAberto(false);
   };
 
   return (
-    <div className="space-y-4">
+    <div className="container mx-auto px-4 py-6 space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <div className="relative w-full sm:max-w-xs">
+        <div className="relative flex-1 max-w-md">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
@@ -46,13 +44,45 @@ const Clientes = () => {
             onChange={(e) => setBusca(e.target.value)}
           />
         </div>
-        <Button onClick={handleAdicionarCliente}>
+        <Button onClick={handleAdicionarCliente} className="whitespace-nowrap">
           <Plus className="mr-2 h-4 w-4" />
           Adicionar Cliente
         </Button>
       </div>
 
-      <div className="rounded-md border">
+      {/* Lista de clientes em cards para mobile e tabela para desktop */}
+      <div className="md:hidden space-y-4">
+        {clientesFiltrados.map((cliente) => (
+          <Card key={cliente.id} className="hover:bg-gray-50 transition-colors">
+            <CardContent className="p-4">
+              <div className="space-y-2">
+                <h3 className="font-medium">{cliente.nome}</h3>
+                <div className="text-sm text-muted-foreground">
+                  <p>{cliente.telefone || '-'}</p>
+                  <p>{cliente.email || '-'}</p>
+                  <p>{cliente.cidade}, {cliente.estado}</p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full mt-2"
+                  onClick={() => navigate(`/clientes/${cliente.id}`)}
+                >
+                  Ver Cliente
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+        {clientesFiltrados.length === 0 && (
+          <div className="text-center py-8 text-muted-foreground">
+            Nenhum cliente encontrado.
+          </div>
+        )}
+      </div>
+
+      {/* Tabela para desktop */}
+      <div className="hidden md:block rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
