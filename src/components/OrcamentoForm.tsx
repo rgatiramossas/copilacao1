@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -39,9 +38,10 @@ const formSchema = z.object({
 interface OrcamentoFormProps {
   orcamentoId?: string;
   isReadOnly?: boolean;
+  onCancel: () => void;
 }
 
-export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: OrcamentoFormProps) {
+export default function OrcamentoForm({ orcamentoId, isReadOnly = false, onCancel }: OrcamentoFormProps) {
   const navigate = useNavigate();
   const [clientes, setClientes] = useState<any[]>([]);
   const [danos, setDanos] = useState<DanoVeiculo[]>([]);
@@ -110,11 +110,11 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
           // Primeiro inicializa com todos os danos vazios
           const allDanos = pecasVeiculo.map(peca => {
             const existingDano = orcamento.danos.find(d => d.pecaId === peca.id);
-            
+
             if (existingDano) {
               return existingDano;
             }
-            
+
             return {
               pecaId: peca.id,
               amassados: {
@@ -129,7 +129,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
               },
             };
           });
-          
+
           setDanos(allDanos);
         }
 
@@ -150,7 +150,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
   // Função para atualizar os valores de amassados
   const handleAmassadosChange = (pecaId: string, tamanho: keyof DanoVeiculo['amassados'], valor: number) => {
     if (!isEditing) return;
-    
+
     setDanos(prev => 
       prev.map(dano => 
         dano.pecaId === pecaId
@@ -169,7 +169,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
   // Função para atualizar os valores de materiais
   const handleMateriaisChange = (pecaId: string, material: keyof DanoVeiculo['materiais'], checked: boolean) => {
     if (!isEditing) return;
-    
+
     setDanos(prev => 
       prev.map(dano => 
         dano.pecaId === pecaId
@@ -255,7 +255,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
           {/* Grid de danos */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Danos do Veículo</h2>
-            
+
             <DanosVeiculoGrid 
               danos={danos}
               isEditing={isEditing}
@@ -271,18 +271,18 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
           </div>
 
           </div>
-          
+
           {/* Botões de ação */}
           <div className="bg-white p-4 flex flex-col sm:flex-row justify-end gap-3 border-t shadow-[0_-1px_3px_rgba(0,0,0,0.1)]">
             <Button 
               type="button" 
               variant="outline" 
-              onClick={() => navigate('/orcamentos')}
+              onClick={onCancel}
               className="w-full sm:w-auto"
             >
               Cancelar
             </Button>
-            
+
             {isEditing && (
               <Button type="submit" className="w-full sm:w-auto">
                 <Save className="mr-2 h-4 w-4" />

@@ -33,7 +33,8 @@ export default function Orcamentos() {
     queryFn: () => clienteService.getClientes(),
   });
 
-  const handleNovoOrcamento = () => navigate('/orcamentos/novo');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleNovoOrcamento = () => setIsModalOpen(true);
   const handleVerDetalhes = (id: string) => navigate(`/orcamentos/${id}`);
   const handleImprimir = () => {
     toast.info("Preparando impressão...");
@@ -152,6 +153,15 @@ export default function Orcamentos() {
           onConfirm={confirmarExclusao}
           onCancel={() => setIsDeleteDialogOpen(false)}
         />
+      </Dialog>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Novo Orçamento</DialogTitle>
+          </DialogHeader>
+          <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
+        </DialogContent>
       </Dialog>
     </div>
   );
