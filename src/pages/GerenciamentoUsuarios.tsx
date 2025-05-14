@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Users, UserPlus, UserCog } from "lucide-react";
+import { Users, UserPlus, UserCog, Pencil } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -27,10 +27,11 @@ const userFormSchema = z.object({
 type UserFormValues = z.infer<typeof userFormSchema>;
 
 // Componente para o formulário de usuário
-const UserForm = ({ onSubmit, defaultValues, role }: { 
+const UserForm = ({ onSubmit, defaultValues, role, isEditing = false }: { 
   onSubmit: (data: UserFormValues) => void, 
   defaultValues?: Partial<UserFormValues>,
-  role?: UserRole 
+  role?: UserRole,
+  isEditing?: boolean
 }) => {
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
@@ -78,9 +79,14 @@ const UserForm = ({ onSubmit, defaultValues, role }: {
           name="senha"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Senha</FormLabel>
+              <FormLabel>{isEditing ? "Nova Senha (deixe em branco para não alterar)" : "Senha"}</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="******" {...field} />
+                <Input 
+                  type="password" 
+                  placeholder={isEditing ? "••••••" : "******"} 
+                  {...field} 
+                  required={!isEditing}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,6 +154,8 @@ const GerenciamentoUsuarios = () => {
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState<'tecnico-admin' | 'gestor'>('tecnico-admin');
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   // Filtrar usuários por tipo
   const adminUsers = users.filter(user => user.role === 'administrador');
@@ -180,6 +188,56 @@ const GerenciamentoUsuarios = () => {
     toast.success(`Gestor ${data.nome} adicionado com sucesso!`);
   };
 
+  const handleEditUser = (data: UserFormValues) => {
+    if (!editingUser) return;
+    
+    const updatedUsers = users.map(user => {
+      if (user.id === editingUser.id) {
+        return {
+          ...user,
+          nome: data.nome,
+          email: data.email,
+          role: data.role || user.role,
+        };
+      }
+      return user;
+    });
+    
+    setUsers(updatedUsers);
+    setOpenDialog(false);
+    setEditingUser(null);
+    setIsEditing(false);
+    toast.success(`Usuário ${data.nome} atualizado com sucesso!`);
+  };
+
+  const handleEditGestor = (data: UserFormValues) => {
+    if (!editingUser) return;
+    
+    const updatedUsers = users.map(user => {
+      if (user.id === editingUser.id) {
+        return {
+          ...user,
+          nome: data.nome,
+          email: data.email,
+        };
+      }
+      return user;
+    });
+    
+    setUsers(updatedUsers);
+    setOpenDialog(false);
+    setEditingUser(null);
+    setIsEditing(false);
+    toast.success(`Gestor ${data.nome} atualizado com sucesso!`);
+  };
+
+  const openEditDialog = (user: User) => {
+    setEditingUser(user);
+    setIsEditing(true);
+    setDialogType(user.role === 'gestor' ? 'gestor' : 'tecnico-admin');
+    setOpenDialog(true);
+  };
+
   return (
     <div className="container mx-auto p-6">
       <div className="flex items-center justify-between mb-6">
@@ -202,10 +260,16 @@ const GerenciamentoUsuarios = () => {
           <Card className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-semibold">Técnicos e Administradores</h2>
-              <Dialog open={openDialog && dialogType === 'tecnico-admin'} onOpenChange={(open) => {
-                setOpenDialog(open);
-                if (open) setDialogType('tecnico-admin');
-              }}>
+              <Dialog 
+                open={openDialog && dialogType === 'tecnico-admin' && !isEditing} 
+                onOpenChange={(open) => {
+                  setOpenDialog(open);
+                  if (open) {
+                    setDialogType('tecnico-admin');
+                    setIsEditing(false);
+                  }
+                }}
+              >
                 <DialogTrigger asChild>
                   <Button>
                     <UserPlus className="mr-2 h-4 w-4" />
@@ -217,6 +281,36 @@ const GerenciamentoUsuarios = () => {
                     <DialogTitle>Adicionar Novo Usuário</DialogTitle>
                   </DialogHeader>
                   <UserForm onSubmit={handleAddUser} />
+                </DialogContent>
+              </Dialog>
+
+              {/* Dialog para edição de usuário técnico/administrador */}
+              <Dialog 
+                open={openDialog && dialogType === 'tecnico-admin' && isEditing} 
+                onOpenChange={(open) => {
+                  setOpenDialog(open);
+                  if (!open) {
+                    setEditingUser(null);
+                    setIsEditing(false);
+                  }
+                }}
+              >
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Editar Usuário</DialogTitle>
+                  </DialogHeader>
+                  {editingUser && (
+                    <UserForm 
+                      onSubmit={handleEditUser} 
+                      defaultValues={{
+                        nome: editingUser.nome,
+                        email: editingUser.email,
+                        senha: "",
+                        role: editingUser.role as any
+                      }}
+                      isEditing={true}
+                    />
+                  )}
                 </DialogContent>
               </Dialog>
             </div>
@@ -240,7 +334,14 @@ const GerenciamentoUsuarios = () => {
                         {user.role === 'administrador' ? 'Administrador' : 'Técnico'}
                       </TableCell>
                       <TableCell>
-                        <Button variant="outline" size="sm">Editar</Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => openEditDialog(user)}
+                        >
+                          <Pencil className="mr-2 h-4 w-4" />
+                          Editar
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -254,10 +355,16 @@ const GerenciamentoUsuarios = () => {
           <Card className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-semibold">Gestores</h2>
-              <Dialog open={openDialog && dialogType === 'gestor'} onOpenChange={(open) => {
-                setOpenDialog(open);
-                if (open) setDialogType('gestor');
-              }}>
+              <Dialog 
+                open={openDialog && dialogType === 'gestor' && !isEditing} 
+                onOpenChange={(open) => {
+                  setOpenDialog(open);
+                  if (open) {
+                    setDialogType('gestor');
+                    setIsEditing(false);
+                  }
+                }}
+              >
                 <DialogTrigger asChild>
                   <Button>
                     <UserPlus className="mr-2 h-4 w-4" />
@@ -269,6 +376,37 @@ const GerenciamentoUsuarios = () => {
                     <DialogTitle>Adicionar Novo Gestor</DialogTitle>
                   </DialogHeader>
                   <UserForm onSubmit={handleAddGestor} role="gestor" />
+                </DialogContent>
+              </Dialog>
+
+              {/* Dialog para edição de gestor */}
+              <Dialog 
+                open={openDialog && dialogType === 'gestor' && isEditing} 
+                onOpenChange={(open) => {
+                  setOpenDialog(open);
+                  if (!open) {
+                    setEditingUser(null);
+                    setIsEditing(false);
+                  }
+                }}
+              >
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Editar Gestor</DialogTitle>
+                  </DialogHeader>
+                  {editingUser && (
+                    <UserForm 
+                      onSubmit={handleEditGestor} 
+                      defaultValues={{
+                        nome: editingUser.nome,
+                        email: editingUser.email,
+                        senha: "",
+                        role: "gestor"
+                      }}
+                      role="gestor"
+                      isEditing={true}
+                    />
+                  )}
                 </DialogContent>
               </Dialog>
             </div>
@@ -293,7 +431,14 @@ const GerenciamentoUsuarios = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">Editar</Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => openEditDialog(user)}
+                          >
+                            <Pencil className="mr-2 h-4 w-4" />
+                            Editar
+                          </Button>
                           <Button variant="outline" size="sm">Clientes</Button>
                         </div>
                       </TableCell>
