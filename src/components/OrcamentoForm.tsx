@@ -228,7 +228,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false, onCance
   return (
     <div className="flex flex-col w-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-[1400px] mx-auto">
           <div className="flex-1 bg-white px-4 py-5 sm:p-6">
           {/* Cabeçalho do formulário */}
           <OrcamentoCabecalho 

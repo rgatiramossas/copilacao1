@@ -36,7 +36,7 @@ export function DanosVeiculoGrid({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 max-w-[1400px] mx-auto">
       {/* Linha 1 */}
       <Card>
         <CardContent className="p-4">

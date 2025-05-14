@@ -157,11 +157,11 @@ export default function Orcamentos() {
       </Dialog>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[90%] lg:max-w-[80%] xl:max-w-6xl max-h-[90vh]">
+        <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] max-h-[95vh]">
           <DialogHeader>
             <DialogTitle>Novo Orçamento</DialogTitle>
           </DialogHeader>
-          <div className="mt-4 overflow-y-auto pr-2" style={{ maxHeight: "calc(90vh - 120px)" }}>
+          <div className="mt-4 overflow-y-auto pr-2" style={{ maxHeight: "calc(95vh - 120px)" }}>
             <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
           </div>
         </DialogContent>
