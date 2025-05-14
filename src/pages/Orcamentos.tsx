@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { OrcamentoItem } from '@/components/OrcamentoItem';
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 import { Card, CardContent } from '@/components/ui/card';
+import OrcamentoForm from '@/components/OrcamentoForm';
 import { Badge } from '@/components/ui/badge';
 
 export default function Orcamentos() {
