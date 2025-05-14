@@ -27,6 +27,9 @@ export default function Orcamentos() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [orcamentoParaExcluir, setOrcamentoParaExcluir] = useState<string | null>(null);
 
+  // Title will be shown in AppLayout
+  document.title = "Orçamentos";
+
   const { data: orcamentos = [], refetch } = useQuery({
     queryKey: ['orcamentos'],
     queryFn: () => orcamentoService.getOrcamentos(),
@@ -74,7 +77,7 @@ export default function Orcamentos() {
 
   return (
     <AppLayout>
-      <div className="p-6">
+      <div className="px-6 pt-2">
         <div className="flex justify-end items-center mb-6">
           <Button onClick={handleNovoOrcamento}>
             <Plus className="mr-2 h-4 w-4" />
