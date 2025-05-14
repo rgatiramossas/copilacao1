@@ -26,11 +26,11 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
   };
 
   return (
-    <div className="space-y-4 h-full flex flex-col justify-between">
+    <div className="h-full flex flex-col justify-between gap-2">
       {/* Amassados */}
-      <div className="grid gap-2 w-full">
-        <div className="grid grid-cols-[45px,1fr] sm:grid-cols-[60px,1fr] items-center">
-          <label className="text-sm">20mm</label>
+      <div className="grid gap-1 sm:gap-2 w-full">
+        <div className="grid grid-cols-[35px,1fr] sm:grid-cols-[60px,1fr] items-center">
+          <label className="text-xs sm:text-sm">20mm</label>
           <div className="flex justify-end">
             <Input
               type="number"
@@ -38,7 +38,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
               onChange={(e) => onChange('mm20', parseInt(e.target.value) || 0)}
               onFocus={handleFocus}
               onBlur={(e) => handleBlur(e, 'mm20')}
-              className="w-14 text-center p-1 h-8"
+              className="w-12 sm:w-14 text-center p-1 h-7 sm:h-8 text-xs sm:text-sm"
               min={0}
               disabled={disabled}
             />
@@ -77,13 +77,14 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
       </div>
 
       {/* Materiais */}
-      <div className="flex space-x-3 pt-2 border-t">
+      <div className="flex justify-center space-x-2 sm:space-x-3 pt-1 sm:pt-2 border-t">
         <div className="flex items-center space-x-1">
           <Checkbox
             id={`aluminio-${dano.pecaId}`}
             checked={dano.materiais.aluminio}
             onCheckedChange={(checked) => onMaterialChange('aluminio', checked === true)}
             disabled={disabled}
+            className="h-3 w-3 sm:h-4 sm:w-4"
           />
           <label 
             htmlFor={`aluminio-${dano.pecaId}`} 

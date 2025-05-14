@@ -36,10 +36,10 @@ export function DanosVeiculoGrid({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-3 mt-4 max-w-[1400px] mx-auto px-2">
+    <div className="grid grid-cols-3 gap-1 sm:gap-3 mt-4 max-w-[1400px] mx-auto px-1 sm:px-2">
       {/* Linha 1 */}
-      <Card className="w-full">
-        <CardContent className="p-2 h-[200px] grid grid-rows-[auto,1fr] gap-2">
+      <Card className="w-full min-w-0">
+        <CardContent className="p-1 sm:p-2 h-[180px] sm:h-[200px] grid grid-rows-[auto,1fr] gap-1 sm:gap-2">
           <h3 className="font-medium mb-2">
             <span className="hidden sm:inline">{getNomePeca('paraLamaEsquerdo')}</span>
             <span className="sm:hidden">Para-lama Esq.</span>
