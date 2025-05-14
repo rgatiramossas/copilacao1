@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
-import logo from '/logo.svg';
+import logo from '@/assets/logo.svg';
 import { Home, ClipboardList, LogOut, UserCircle, FileText, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
