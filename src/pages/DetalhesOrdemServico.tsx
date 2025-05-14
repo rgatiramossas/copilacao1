@@ -125,36 +125,37 @@ const DetalhesOrdemServico = () => {
   
   return (
     <AppLayout>
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center">
-          <FileText className="h-6 w-6 mr-2" />
-          <h1 className="text-2xl font-bold">OS #{ordem.id}</h1>
-          <Badge className={`ml-3 ${getStatusClassName(ordem.status)}`}>
-            {getStatusLabel(ordem.status)}
-          </Badge>
-        </div>
-        <div className="flex gap-2">
+      <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
+              <h1 className="text-xl sm:text-2xl font-bold">OS #{ordem.id}</h1>
+            </div>
+            <Badge className={`${getStatusClassName(ordem.status)}`}>
+              {getStatusLabel(ordem.status)}
+            </Badge>
+          </div>
           {podeEditar && (
-            <>
-              <Button variant="outline" onClick={handleEditar}>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button className="flex-1 sm:flex-none" variant="outline" onClick={handleEditar}>
                 <Edit className="h-4 w-4 mr-2" />
                 Editar
               </Button>
-              <Button variant="destructive" onClick={handleExcluir}>
+              <Button className="flex-1 sm:flex-none" variant="destructive" onClick={handleExcluir}>
                 <Trash2 className="h-4 w-4 mr-2" />
                 Excluir
               </Button>
-            </>
+            </div>
           )}
         </div>
-      </div>
       
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Informações Básicas</CardTitle>
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+        <Card className="shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Informações Básicas</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             <div>
               <p className="text-sm text-muted-foreground">Data de Abertura</p>
               <p className="font-medium">{formatarData(ordem.dataAbertura)}</p>
@@ -272,13 +273,13 @@ const DetalhesOrdemServico = () => {
           </CardHeader>
           <CardContent>
             {ordem.fotos && ordem.fotos.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
                 {ordem.fotos.map((foto, index) => (
-                  <div key={index} className="relative aspect-square overflow-hidden rounded-md border">
+                  <div key={index} className="relative aspect-square group overflow-hidden rounded-lg border hover:border-primary/50 transition-colors">
                     <img
                       src={foto}
                       alt={`Foto ${index + 1}`}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                 ))}
