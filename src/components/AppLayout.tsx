@@ -73,22 +73,12 @@ const AppLayout: React.FC<{
         </div>
       </main>
       
-      {/* Menu inferior simplificado com apenas 4 itens + logout */}
+      {/* Menu inferior simplificado */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-16 flex justify-around items-center z-40">
         <BottomNavItem key="home" to="/dashboard" label="Início" icon={<Home size={20} />} active={isActive('/dashboard')} />
-        
         <BottomNavItem key="clients" to="/clientes" label="Clientes" icon={<UserCircle size={20} />} active={isActive('/clientes') || isActive('/meus-clientes')} />
-        
         <BottomNavItem key="orders" to="/ordens-servico" label="Ordens" icon={<ClipboardList size={20} />} active={isActive('/ordens-servico') || isActive('/minhas-ordens')} />
-        
         <BottomNavItem key="budgets" to="/orcamentos" label="Orçamentos" icon={<FileText size={20} />} active={location.pathname.startsWith('/orcamentos')} />
-        
-        <button onClick={logout} className="flex flex-col items-center justify-center text-red-500">
-          <div className="flex flex-col items-center p-2">
-            
-            
-          </div>
-        </button>
       </nav>
     </div>;
 };
