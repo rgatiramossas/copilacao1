@@ -10,7 +10,7 @@ import { orcamentoService } from '@/services/orcamentoService';
 import { clienteService } from '@/services/clienteService';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { OrcamentoItem } from '@/components/OrcamentoItem';
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 import { Card, CardContent } from '@/components/ui/card';
