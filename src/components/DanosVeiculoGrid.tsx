@@ -36,7 +36,7 @@ export function DanosVeiculoGrid({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-2 mt-4 max-w-[1400px] mx-auto" style={{ minWidth: 'min-content' }}>
+    <div className="grid grid-cols-3 gap-2 mt-4 max-w-[1400px] mx-auto px-2 md:px-0" style={{ minWidth: 'min-content' }}>
       {/* Linha 1 */}
       <Card className="flex flex-col h-[220px] sm:h-[180px]">
         <CardContent className="p-1 sm:p-4 flex-1 flex flex-col justify-between">
