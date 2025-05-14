@@ -163,7 +163,8 @@ export default function Orcamentos() {
           </DialogHeader>
           <div className="overflow-x-auto">
             <div className="min-w-[800px] p-4 pt-2">
-            <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
+              <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
+            </div>
           </div>
         </DialogContent>
       </Dialog>
