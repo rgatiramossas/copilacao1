@@ -8,6 +8,7 @@ import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import NovaOrdemServicoDialog from '@/components/NovaOrdemServicoDialog';
 import { ordemServicoService } from '@/services/ordemServicoService';
 import { OrdemServico, StatusOS } from '@/types';
@@ -44,8 +45,8 @@ const OrdensServico = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
+    <div className="container mx-auto px-4 py-6 space-y-6">
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Ordens de Serviço</h1>
         <Button onClick={() => setDialogAberta(true)}>
           <Plus className="mr-2 h-4 w-4" />
@@ -59,45 +60,79 @@ const OrdensServico = () => {
           <Button onClick={() => setDialogAberta(true)}>Criar Primeira OS</Button>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nº</TableHead>
-                <TableHead>Data</TableHead>
-                <TableHead>Cliente</TableHead>
-                <TableHead>Veículo</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {ordens.map((ordem) => (
-                <TableRow key={ordem.id}>
-                  <TableCell>{ordem.id}</TableCell>
-                  <TableCell>{formatarData(ordem.dataAbertura)}</TableCell>
-                  <TableCell>Cliente {ordem.clienteId}</TableCell>
-                  <TableCell>{ordem.veiculo}</TableCell>
-                  <TableCell>{ordem.tipoServico}</TableCell>
-                  <TableCell>
+        <>
+          {/* Cards para mobile */}
+          <div className="md:hidden space-y-4">
+            {ordens.map((ordem) => (
+              <Card key={ordem.id} className="hover:bg-gray-50 transition-colors">
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium">OS #{ordem.id}</p>
+                      <p className="text-sm text-muted-foreground">{formatarData(ordem.dataAbertura)}</p>
+                    </div>
                     <StatusBadge status={ordem.status} />
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => navigate(`/ordens-servico/${ordem.id}`)}
-                    >
-                      <Eye className="h-4 w-4 mr-1" />
-                      Ver Detalhes
-                    </Button>
-                  </TableCell>
+                  </div>
+                  <div className="space-y-1 text-sm">
+                    <p><span className="text-muted-foreground">Cliente:</span> Cliente {ordem.clienteId}</p>
+                    <p><span className="text-muted-foreground">Veículo:</span> {ordem.veiculo}</p>
+                    <p><span className="text-muted-foreground">Tipo:</span> {ordem.tipoServico}</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => navigate(`/ordens-servico/${ordem.id}`)}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    Ver Detalhes
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Tabela para desktop */}
+          <div className="hidden md:block rounded-lg shadow overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nº</TableHead>
+                  <TableHead>Data</TableHead>
+                  <TableHead>Cliente</TableHead>
+                  <TableHead>Veículo</TableHead>
+                  <TableHead>Tipo</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {ordens.map((ordem) => (
+                  <TableRow key={ordem.id}>
+                    <TableCell>{ordem.id}</TableCell>
+                    <TableCell>{formatarData(ordem.dataAbertura)}</TableCell>
+                    <TableCell>Cliente {ordem.clienteId}</TableCell>
+                    <TableCell>{ordem.veiculo}</TableCell>
+                    <TableCell>{ordem.tipoServico}</TableCell>
+                    <TableCell>
+                      <StatusBadge status={ordem.status} />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/ordens-servico/${ordem.id}`)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Ver Detalhes
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </>
       )}
 
       <NovaOrdemServicoDialog 
