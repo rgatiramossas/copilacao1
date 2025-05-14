@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -18,7 +17,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
       e.target.value = "";
     }
   };
-  
+
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>, tamanho: keyof DanoVeiculo['amassados']) => {
     if (e.target.value === "") {
       e.target.value = "0";
@@ -27,7 +26,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4 h-full flex flex-col justify-between">
       {/* Amassados */}
       <div className="space-y-2">
         <div className="flex justify-between items-center">
@@ -87,7 +86,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
             A
           </label>
         </div>
-        
+
         <div className="flex items-center space-x-1">
           <Checkbox
             id={`cola-${dano.pecaId}`}
@@ -102,7 +101,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
             K
           </label>
         </div>
-        
+
         <div className="flex items-center space-x-1">
           <Checkbox
             id={`pintura-${dano.pecaId}`}
