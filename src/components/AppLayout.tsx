@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
+import logo from '/logo.svg';
 import { Home, ClipboardList, LogOut, UserCircle, FileText, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ const AppLayout: React.FC<{
         <header className="bg-white shadow-sm h-16 flex items-center px-4">
           <div className="flex w-full justify-between items-center">
             <div className="flex items-center">
-              <img src="/logo.svg" alt="Euro Dent Experts" className="h-12 w-auto" style={{ width: '150px' }} />
+              <img src={logo} alt="Euro Dent Experts" className="h-12 w-auto" style={{ width: '150px' }} />
             </div>
             
             <div className="flex items-center space-x-3">
