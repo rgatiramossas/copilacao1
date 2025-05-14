@@ -19,8 +19,10 @@ export default function Orcamentos() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [orcamentoParaExcluir, setOrcamentoParaExcluir] = useState<string | null>(null);
 
+  // Definir título da página
   document.title = "Orçamentos";
 
+  // Buscar dados
   const { data: orcamentos = [], refetch } = useQuery({
     queryKey: ['orcamentos'],
     queryFn: () => orcamentoService.getOrcamentos(),
@@ -31,11 +33,16 @@ export default function Orcamentos() {
     queryFn: () => clienteService.getClientes(),
   });
 
+  // Handlers
+  const handleNovoOrcamento = () => {
+    navigate('/orcamentos/novo');
+  };
+
   const handleVerDetalhes = (id: string) => {
     navigate(`/orcamentos/${id}`);
   };
 
-  const handleImprimir = (orcamento: any) => {
+  const handleImprimir = () => {
     toast.info("Preparando impressão...");
     setTimeout(() => {
       toast.success("Documento enviado para impressão");
@@ -61,56 +68,51 @@ export default function Orcamentos() {
     setOrcamentoParaExcluir(null);
   };
 
-  const handleNovoOrcamento = () => {
-    navigate('/orcamentos/novo');
-  };
-
   return (
     <AppLayout>
-      <div className="flex-1 bg-gray-50">
-        <div className="px-4 py-4">
-          <div className="flex justify-end mb-4">
-            <Button onClick={handleNovoOrcamento}>
-              <Plus className="mr-2 h-4 w-4" />
-              Novo Orçamento
-            </Button>
-          </div>
+      <div className="flex-1 space-y-4 p-4 md:p-8">
+        <div className="flex items-center justify-between space-y-2">
+          <h2 className="text-3xl font-bold tracking-tight">Orçamentos</h2>
+          <Button onClick={handleNovoOrcamento}>
+            <Plus className="mr-2 h-4 w-4" />
+            Novo Orçamento
+          </Button>
+        </div>
 
-          <div className="bg-white rounded-md border shadow-sm">
-            <Table>
-              <TableHeader>
+        <div className="rounded-md border bg-white">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Data</TableHead>
+                <TableHead>Cliente</TableHead>
+                <TableHead>Veículo</TableHead>
+                <TableHead>Placa/Chassi</TableHead>
+                <TableHead>Total AW</TableHead>
+                <TableHead>Valor (€)</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {orcamentos.length === 0 ? (
                 <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead>Veículo</TableHead>
-                  <TableHead>Placa/Chassi</TableHead>
-                  <TableHead>Total AW</TableHead>
-                  <TableHead>Valor (€)</TableHead>
-                  <TableHead className="text-right">Ações</TableHead>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    Nenhum orçamento encontrado.
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {orcamentos.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-24 text-center">
-                      Nenhum orçamento encontrado.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  orcamentos.map((orcamento) => (
-                    <OrcamentoItem 
-                      key={orcamento.id}
-                      orcamento={orcamento}
-                      clientes={clientes}
-                      onVerDetalhes={handleVerDetalhes}
-                      onImprimir={handleImprimir}
-                      onExcluir={handleExcluir}
-                    />
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
+              ) : (
+                orcamentos.map((orcamento) => (
+                  <OrcamentoItem 
+                    key={orcamento.id}
+                    orcamento={orcamento}
+                    clientes={clientes}
+                    onVerDetalhes={handleVerDetalhes}
+                    onImprimir={handleImprimir}
+                    onExcluir={handleExcluir}
+                  />
+                ))
+              )}
+            </TableBody>
+          </Table>
         </div>
       </div>
 
