@@ -49,10 +49,7 @@ const AppLayout: React.FC<{
         <header className="bg-white shadow-sm h-16 flex items-center px-4">
           <div className="flex w-full justify-between items-center">
             <div className="flex items-center">
-              <Avatar className="h-12 w-auto rounded-none">
-                <AvatarImage src="/logo.svg" alt="Euro Dent Experts" className="object-contain" style={{ width: '150px' }} />
-                <AvatarFallback>EDE</AvatarFallback>
-              </Avatar>
+              <img src="/logo.svg" alt="Euro Dent Experts" className="h-12 w-auto" style={{ width: '180px' }} />
             </div>
             
             <div className="flex items-center space-x-3">

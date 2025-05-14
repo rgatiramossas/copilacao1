@@ -1,19 +1,28 @@
 
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect width="100%" height="100%" fill="#FFFDF7"/>
-    <g transform="translate(50, 50) scale(0.833)">
-      <path d="M300 100 C 380 100, 440 160, 440 240 C 440 320, 380 380, 300 380 C 220 380, 160 320, 160 240 C 160 160, 220 100, 300 100" fill="#FFA500" stroke="none"/>
-      <path d="M200 200 L 400 200 L 400 400 L 200 400 Z" fill="#1A365D"/>
-      <path d="M280 180 L 320 180 L 320 200 L 280 200 Z" fill="white"/>
-      <path d="M280 220 L 300 240 L 280 260 Z" fill="#DC2626"/>
-      <path d="M150 150 L 180 150 L 180 330 L 150 330 Z" fill="#FFA500" transform="rotate(-45, 165, 240)"/>
-      <path d="M420 150 L 450 150 L 450 330 L 420 330 Z" fill="#FFA500" transform="rotate(45, 435, 240)"/>
-      <rect x="150" y="400" width="300" height="60" fill="#1A365D" rx="10"/>
-      <text x="300" y="442" font-family="Arial" font-size="24" fill="#FFA500" text-anchor="middle">EURO DENT EXPERTS</text>
-      <path d="M150 460 C 150 460, 450 460, 450 460" fill="none" stroke="#1A365D" stroke-width="60"/>
-      <text x="300" y="495" font-family="Arial" font-size="20" fill="#FFD700" text-anchor="middle">GESTÃO DE SERVIÇOS AUTOMOTIVOS</text>
+    <g transform="translate(100, 50)">
+      <!-- Gear Icon -->
+      <path d="M350 100 C 430 100, 490 160, 490 240 C 490 320, 430 380, 350 380 C 270 380, 210 320, 210 240 C 210 160, 270 100, 350 100" fill="#FFA500" stroke="none"/>
+      
+      <!-- Car Silhouette -->
+      <path d="M250 200 L 450 200 L 450 400 L 250 400 Z" fill="#1A365D"/>
+      
+      <!-- Mechanic Figure -->
+      <g transform="translate(300, 250)">
+        <rect x="-30" y="-40" width="60" height="80" fill="#FF6B35"/>
+        <circle cx="0" cy="-60" r="20" fill="#FFD700"/>
+      </g>
+      
+      <!-- Wrenches -->
+      <path d="M200 150 L 230 150 L 230 330 L 200 330 Z" fill="#FFA500" transform="rotate(-45, 215, 240)"/>
+      <path d="M470 150 L 500 150 L 500 330 L 470 330 Z" fill="#FFA500" transform="rotate(45, 485, 240)"/>
+      
+      <!-- Text -->
+      <text x="350" y="450" font-family="Arial" font-size="36" fill="#1A365D" text-anchor="middle" font-weight="bold">EURO DENT EXPERTS</text>
+      <text x="350" y="500" font-family="Arial" font-size="24" fill="#1A365D" text-anchor="middle">GESTÃO DE SERVIÇOS AUTOMOTIVOS</text>
     </g>
   </g>
 </svg>
