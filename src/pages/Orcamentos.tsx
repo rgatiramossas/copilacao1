@@ -63,31 +63,32 @@ export default function Orcamentos() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">Orçamentos</h1>
-        <Button 
-          onClick={handleNovoOrcamento}
-          className="w-full sm:w-auto bg-primary hover:bg-primary/90"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Novo Orçamento
-        </Button>
-      </div>
+    <>
+      <div className="container mx-auto px-4 py-6 space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h1 className="text-2xl font-bold text-gray-900">Orçamentos</h1>
+          <Button 
+            onClick={handleNovoOrcamento}
+            className="w-full sm:w-auto bg-primary hover:bg-primary/90"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Novo Orçamento
+          </Button>
+        </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-          {orcamentos.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-32">
-              <p className="text-gray-500 mb-2">Nenhum orçamento encontrado</p>
-              <Button 
-                variant="outline" 
-                onClick={handleNovoOrcamento}
-                className="mt-2"
-              >
-                Criar primeiro orçamento
-              </Button>
-            </div>
-          ) : (
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+            {orcamentos.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-32">
+                <p className="text-gray-500 mb-2">Nenhum orçamento encontrado</p>
+                <Button 
+                  variant="outline" 
+                  onClick={handleNovoOrcamento}
+                  className="mt-2"
+                >
+                  Criar primeiro orçamento
+                </Button>
+              </div>
+            ) : (
             <>
               {/* Visualização em cards para mobile */}
               <div className="md:hidden space-y-4 p-4">
@@ -171,14 +172,15 @@ export default function Orcamentos() {
             </>
           )}
         </div>
-      </div>
+        </div>
 
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <ConfirmDeleteDialog 
-          onConfirm={confirmarExclusao}
-          onCancel={() => setIsDeleteDialogOpen(false)}
-        />
-      </Dialog>
-    </div>
+        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <ConfirmDeleteDialog 
+            onConfirm={confirmarExclusao}
+            onCancel={() => setIsDeleteDialogOpen(false)}
+          />
+        </Dialog>
+      </div>
+    </>
   );
 }
