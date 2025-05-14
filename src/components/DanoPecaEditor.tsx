@@ -28,17 +28,17 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
   return (
     <div className="space-y-4 h-full flex flex-col justify-between">
       {/* Amassados */}
-      <div className="grid gap-1 w-full">
-        <div className="grid grid-cols-[35px,1fr] sm:grid-cols-[60px,1fr] items-center">
-          <label className="text-xs sm:text-sm">20mm</label>
-          <div className="flex justify-end pr-1 sm:pr-2">
+      <div className="grid gap-2 w-full">
+        <div className="grid grid-cols-[45px,1fr] sm:grid-cols-[60px,1fr] items-center">
+          <label className="text-sm">20mm</label>
+          <div className="flex justify-end">
             <Input
               type="number"
               value={dano.amassados.mm20}
               onChange={(e) => onChange('mm20', parseInt(e.target.value) || 0)}
               onFocus={handleFocus}
               onBlur={(e) => handleBlur(e, 'mm20')}
-              className="w-14 sm:w-16 text-center p-1 h-8"
+              className="w-12 sm:w-16 text-center p-1 h-8"
               min={0}
               disabled={disabled}
             />
