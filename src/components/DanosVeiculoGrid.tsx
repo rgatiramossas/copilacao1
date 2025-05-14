@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Image } from 'lucide-react';
@@ -20,7 +19,7 @@ export function DanosVeiculoGrid({
   handleAmassadosChange, 
   handleMateriaisChange 
 }: DanosVeiculoGridProps) {
-  
+
   // Encontra o dano de uma peça específica
   const findDano = (pecaId: string) => {
     return danos.find(dano => dano.pecaId === pecaId) || {
@@ -37,7 +36,7 @@ export function DanosVeiculoGrid({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4">
       {/* Linha 1 */}
       <Card>
         <CardContent className="p-4">
@@ -50,7 +49,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('capo')}</h3>
@@ -62,7 +61,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('paraLamaDireito')}</h3>
@@ -87,7 +86,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('teto')}</h3>
@@ -99,7 +98,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('colunaDireita')}</h3>
@@ -124,7 +123,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       {/* Espaço para foto */}
       <Card className="flex items-center justify-center">
         <CardContent className="p-4 flex flex-col items-center justify-center">
@@ -140,7 +139,7 @@ export function DanosVeiculoGrid({
           </Button>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('portaDianteiraDireita')}</h3>
@@ -165,7 +164,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('portaMalasSuperior')}</h3>
@@ -177,7 +176,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('portaTraseiraDireita')}</h3>
@@ -202,7 +201,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('portaMalasInferior')}</h3>
@@ -214,7 +213,7 @@ export function DanosVeiculoGrid({
           />
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-4">
           <h3 className="font-medium mb-2">{getNomePeca('lateralDireita')}</h3>

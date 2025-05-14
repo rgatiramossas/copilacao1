@@ -226,23 +226,25 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
   };
 
   return (
-    <div className="container mx-auto p-4 lg:p-6 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-lg shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900">
-          {orcamentoId 
-            ? (isEditing ? "Editar Orçamento" : "Detalhes do Orçamento") 
-            : "Novo Orçamento"}
-        </h1>
-        {orcamentoId && isReadOnly && (
-          <Button onClick={() => setIsEditing(true)} className="w-full sm:w-auto">
-            Editar
-          </Button>
-        )}
+    <div className="container mx-auto px-4 py-2 lg:p-6 space-y-4">
+      <div className="bg-white p-4 rounded-lg shadow-sm">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+            {orcamentoId 
+              ? (isEditing ? "Editar Orçamento" : "Detalhes do Orçamento") 
+              : "Novo Orçamento"}
+          </h1>
+          {orcamentoId && isReadOnly && (
+            <Button onClick={() => setIsEditing(true)} className="w-full sm:w-auto">
+              Editar
+            </Button>
+          )}
+        </div>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="bg-white rounded-lg shadow-sm p-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="bg-white rounded-lg shadow-sm px-4 py-5 sm:p-6">
           {/* Cabeçalho do formulário */}
           <OrcamentoCabecalho 
             form={form} 
@@ -271,7 +273,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
           </div>
           
           {/* Botões de ação */}
-          <div className="bg-white rounded-lg shadow-sm p-4 flex flex-col sm:flex-row justify-end gap-3">
+          <div className="bg-white rounded-lg shadow-sm p-4 sticky bottom-0 flex flex-col sm:flex-row justify-end gap-3 border-t">
             <Button 
               type="button" 
               variant="outline" 
