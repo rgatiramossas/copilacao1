@@ -38,7 +38,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
               onChange={(e) => onChange('mm20', parseInt(e.target.value) || 0)}
               onFocus={handleFocus}
               onBlur={(e) => handleBlur(e, 'mm20')}
-              className="w-12 sm:w-16 text-center p-1 h-8"
+              className="w-14 text-center p-1 h-8"
               min={0}
               disabled={disabled}
             />
@@ -53,7 +53,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
               onChange={(e) => onChange('mm30', parseInt(e.target.value) || 0)}
               onFocus={handleFocus}
               onBlur={(e) => handleBlur(e, 'mm30')}
-              className="w-12 sm:w-16 text-center p-1 h-8"
+              className="w-14 text-center p-1 h-8"
               min={0}
               disabled={disabled}
             />
@@ -68,7 +68,7 @@ export function DanoPecaEditor({ dano, onChange, onMaterialChange, disabled = fa
               onChange={(e) => onChange('mm40', parseInt(e.target.value) || 0)}
               onFocus={handleFocus}
               onBlur={(e) => handleBlur(e, 'mm40')}
-              className="w-12 sm:w-16 text-center p-1 h-8"
+              className="w-14 text-center p-1 h-8"
               min={0}
               disabled={disabled}
             />
