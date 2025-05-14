@@ -47,7 +47,7 @@ const AppLayout: React.FC<{
         <header className="bg-white shadow-sm h-16 flex items-center px-4">
           <div className="flex w-full justify-between items-center">
             <div className="flex items-center">
-              <img src="/logo.svg" alt="Euro Dent Experts" className="h-12 w-auto" />
+              <img src="logo.svg" alt="Euro Dent Experts" className="h-12 w-auto" />
             </div>
             
             <div className="flex items-center space-x-3">
