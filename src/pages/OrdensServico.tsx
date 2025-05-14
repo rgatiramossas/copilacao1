@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Eye } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-import AppLayout from '@/components/AppLayout';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -44,73 +44,71 @@ const OrdensServico = () => {
   };
 
   return (
-    <AppLayout>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Ordens de Serviço</h1>
-          <Button onClick={() => setDialogAberta(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            Nova OS
-          </Button>
-        </div>
-
-        {ordens.length === 0 ? (
-          <div className="text-center p-10 bg-white rounded-lg shadow">
-            <p className="text-gray-500 mb-4">Nenhuma ordem de serviço encontrada</p>
-            <Button onClick={() => setDialogAberta(true)}>Criar Primeira OS</Button>
-          </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nº</TableHead>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead>Veículo</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Ações</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {ordens.map((ordem) => (
-                  <TableRow key={ordem.id}>
-                    <TableCell>{ordem.id}</TableCell>
-                    <TableCell>{formatarData(ordem.dataAbertura)}</TableCell>
-                    <TableCell>Cliente {ordem.clienteId}</TableCell>
-                    <TableCell>{ordem.veiculo}</TableCell>
-                    <TableCell>{ordem.tipoServico}</TableCell>
-                    <TableCell>
-                      <StatusBadge status={ordem.status} />
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => navigate(`/ordens-servico/${ordem.id}`)}
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        Ver Detalhes
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )}
-
-        <NovaOrdemServicoDialog 
-          isOpen={dialogAberta} 
-          onClose={() => setDialogAberta(false)} 
-          onSucesso={(novaOS) => {
-            setOrdens([...ordens, novaOS]);
-            setDialogAberta(false);
-          }} 
-        />
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Ordens de Serviço</h1>
+        <Button onClick={() => setDialogAberta(true)}>
+          <Plus className="mr-2 h-4 w-4" />
+          Nova OS
+        </Button>
       </div>
-    </AppLayout>
+
+      {ordens.length === 0 ? (
+        <div className="text-center p-10 bg-white rounded-lg shadow">
+          <p className="text-gray-500 mb-4">Nenhuma ordem de serviço encontrada</p>
+          <Button onClick={() => setDialogAberta(true)}>Criar Primeira OS</Button>
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nº</TableHead>
+                <TableHead>Data</TableHead>
+                <TableHead>Cliente</TableHead>
+                <TableHead>Veículo</TableHead>
+                <TableHead>Tipo</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {ordens.map((ordem) => (
+                <TableRow key={ordem.id}>
+                  <TableCell>{ordem.id}</TableCell>
+                  <TableCell>{formatarData(ordem.dataAbertura)}</TableCell>
+                  <TableCell>Cliente {ordem.clienteId}</TableCell>
+                  <TableCell>{ordem.veiculo}</TableCell>
+                  <TableCell>{ordem.tipoServico}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={ordem.status} />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate(`/ordens-servico/${ordem.id}`)}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      Ver Detalhes
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+
+      <NovaOrdemServicoDialog 
+        isOpen={dialogAberta} 
+        onClose={() => setDialogAberta(false)} 
+        onSucesso={(novaOS) => {
+          setOrdens([...ordens, novaOS]);
+          setDialogAberta(false);
+        }} 
+      />
+    </div>
   );
 };
 
