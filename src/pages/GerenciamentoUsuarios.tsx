@@ -1,10 +1,9 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { User, UserRole } from "@/types";
+import { User, UserRole, Cliente } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
@@ -12,9 +11,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Users, UserPlus, UserCog, Pencil } from "lucide-react";
+import { Users, UserPlus, UserCog, Pencil, UserCheck } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { clienteService } from "@/services/clienteService";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Schema de validação para formulário de usuário
 const userFormSchema = z.object({
@@ -153,9 +154,21 @@ const GerenciamentoUsuarios = () => {
   const [activeTab, setActiveTab] = useState("tecnicos-admin");
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [openDialog, setOpenDialog] = useState(false);
-  const [dialogType, setDialogType] = useState<'tecnico-admin' | 'gestor'>('tecnico-admin');
+  const [dialogType, setDialogType] = useState<'tecnico-admin' | 'gestor' | 'clientes'>('tecnico-admin');
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [selectedClientes, setSelectedClientes] = useState<string[]>([]);
+  
+  // Carregar clientes do serviço
+  useEffect(() => {
+    const fetchClientes = () => {
+      const clientesList = clienteService.getClientes();
+      setClientes(clientesList);
+    };
+    
+    fetchClientes();
+  }, []);
 
   // Filtrar usuários por tipo
   const adminUsers = users.filter(user => user.role === 'administrador');
@@ -236,6 +249,56 @@ const GerenciamentoUsuarios = () => {
     setIsEditing(true);
     setDialogType(user.role === 'gestor' ? 'gestor' : 'tecnico-admin');
     setOpenDialog(true);
+  };
+
+  // Abrir diálogo para gerenciar clientes do gestor
+  const openClientesDialog = (user: User) => {
+    setEditingUser(user);
+    // Pré-seleciona clientes já associados ao gestor
+    const clientesDoGestor = clientes
+      .filter(cliente => cliente.gestorId === user.id)
+      .map(cliente => cliente.id);
+    
+    setSelectedClientes(clientesDoGestor);
+    setDialogType('clientes');
+    setOpenDialog(true);
+  };
+
+  // Manipular seleção de clientes
+  const handleClienteToggle = (clienteId: string) => {
+    setSelectedClientes(prev => {
+      if (prev.includes(clienteId)) {
+        return prev.filter(id => id !== clienteId);
+      } else {
+        return [...prev, clienteId];
+      }
+    });
+  };
+
+  // Salvar associações de clientes ao gestor
+  const handleSaveClientesAssociation = () => {
+    if (!editingUser) return;
+    
+    // Atualizar associações de clientes com gestor
+    let updatedCount = 0;
+    
+    // Remover associação de clientes que foram desmarcados
+    clientes.forEach(cliente => {
+      const isSelected = selectedClientes.includes(cliente.id);
+      const wasAssociated = cliente.gestorId === editingUser.id;
+      
+      if (wasAssociated && !isSelected) {
+        clienteService.updateCliente(cliente.id, { gestorId: undefined });
+        updatedCount++;
+      } else if (!wasAssociated && isSelected) {
+        clienteService.updateCliente(cliente.id, { gestorId: editingUser.id });
+        updatedCount++;
+      }
+    });
+    
+    setOpenDialog(false);
+    setEditingUser(null);
+    toast.success(`${updatedCount} associações de clientes foram atualizadas`);
   };
 
   return (
@@ -427,7 +490,7 @@ const GerenciamentoUsuarios = () => {
                       <TableCell>{user.nome}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>
-                        0 clientes
+                        {clientes.filter(cliente => cliente.gestorId === user.id).length} clientes
                       </TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
@@ -439,7 +502,14 @@ const GerenciamentoUsuarios = () => {
                             <Pencil className="mr-2 h-4 w-4" />
                             Editar
                           </Button>
-                          <Button variant="outline" size="sm">Clientes</Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => openClientesDialog(user)}
+                          >
+                            <UserCheck className="mr-2 h-4 w-4" />
+                            Clientes
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -447,6 +517,72 @@ const GerenciamentoUsuarios = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* Dialog para associação de clientes ao gestor */}
+            <Dialog 
+              open={openDialog && dialogType === 'clientes'} 
+              onOpenChange={(open) => {
+                setOpenDialog(open);
+                if (!open) {
+                  setEditingUser(null);
+                  setSelectedClientes([]);
+                }
+              }}
+            >
+              <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    Gerenciar Clientes do Gestor: {editingUser?.nome}
+                  </DialogTitle>
+                </DialogHeader>
+                
+                <div className="py-4">
+                  <div className="mb-4">
+                    <h4 className="font-medium mb-2">Selecione os clientes para este gestor:</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Os clientes selecionados serão gerenciados por este gestor
+                    </p>
+                  </div>
+                  
+                  {clientes.length > 0 ? (
+                    <div className="space-y-2">
+                      {clientes.map((cliente) => (
+                        <div key={cliente.id} className="flex items-center space-x-2 p-2 hover:bg-muted/50 rounded-md">
+                          <Checkbox 
+                            id={`cliente-${cliente.id}`}
+                            checked={selectedClientes.includes(cliente.id)}
+                            onCheckedChange={() => handleClienteToggle(cliente.id)}
+                          />
+                          <Label 
+                            htmlFor={`cliente-${cliente.id}`}
+                            className="flex-1 cursor-pointer"
+                          >
+                            {cliente.nome}
+                            <p className="text-xs text-muted-foreground">{cliente.email}</p>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-center py-4 text-muted-foreground">Nenhum cliente disponível</p>
+                  )}
+                  
+                  <div className="mt-6 flex justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setOpenDialog(false)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button
+                      onClick={handleSaveClientesAssociation}
+                    >
+                      Salvar Alterações
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </Card>
         </TabsContent>
       </Tabs>
