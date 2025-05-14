@@ -46,18 +46,7 @@ const AppLayout: React.FC<{
         {/* Header topo - fixo */}
         <header className="bg-white shadow-sm h-16 flex items-center px-4">
           <div className="flex w-full justify-between items-center">
-            <h2 className="text-lg font-medium">
-              {/* Título dinâmico com base no caminho */}
-              {location.pathname === '/dashboard' && 'Dashboard'}
-              {location.pathname === '/usuarios' && 'Gerenciamento de Usuários'}
-              {location.pathname === '/clientes' && 'Gerenciar Clientes'}
-              {location.pathname === '/meus-clientes' && 'Meus Clientes'}
-              {location.pathname === '/ordens-servico' && 'Ordens de Serviço'}
-              {location.pathname === '/minhas-ordens' && 'Minhas Ordens'}
-              {location.pathname === '/configuracoes' && 'Configurações'}
-              {location.pathname === '/orcamentos' && 'Orçamentos'}
-              {location.pathname.includes('/orcamentos/') && 'Orçamentos'}
-            </h2>
+            <div className="w-4"></div>
             
             <div className="flex items-center space-x-3">
               <Link to="/configuracoes" className="text-gray-600 hover:text-primary">
