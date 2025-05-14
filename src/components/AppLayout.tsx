@@ -46,7 +46,9 @@ const AppLayout: React.FC<{
         {/* Header topo - fixo */}
         <header className="bg-white shadow-sm h-16 flex items-center px-4">
           <div className="flex w-full justify-between items-center">
-            <div className="w-4"></div>
+            <div className="flex items-center">
+              <img src="/logo.svg" alt="Euro Dent Experts" className="h-12 w-auto" />
+            </div>
             
             <div className="flex items-center space-x-3">
               <Link to="/configuracoes" className="text-gray-600 hover:text-primary">
