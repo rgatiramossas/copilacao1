@@ -49,7 +49,7 @@ const AppLayout: React.FC<{
             <h2 className="text-lg font-medium">
               {/* Título dinâmico com base no caminho */}
               {location.pathname === '/dashboard' && 'Dashboard'}
-              {location.pathname === '/usuarios' && 'Gerenciar Usuários'}
+              {location.pathname === '/usuarios' && 'Gerenciamento de Usuários'}
               {location.pathname === '/clientes' && 'Gerenciar Clientes'}
               {location.pathname === '/meus-clientes' && 'Meus Clientes'}
               {location.pathname === '/ordens-servico' && 'Ordens de Serviço'}

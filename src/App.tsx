@@ -18,6 +18,7 @@ import OrdensServico from "@/pages/OrdensServico";
 import DetalhesOrdemServico from "@/pages/DetalhesOrdemServico";
 import Orcamentos from "@/pages/Orcamentos";
 import DetalhesOrcamento from "@/pages/DetalhesOrcamento";
+import GerenciamentoUsuarios from "@/pages/GerenciamentoUsuarios";
 
 const queryClient = new QueryClient();
 
@@ -68,7 +69,7 @@ const App = () => (
                   </div>
                 </div>
               } />
-              <Route path="/usuarios" element={<div className="p-4">Gerenciamento de Usuários</div>} />
+              <Route path="/usuarios" element={<GerenciamentoUsuarios />} />
             </Route>
             
             {/* Rotas protegidas para admin e técnicos */}
