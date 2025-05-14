@@ -1,13 +1,12 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Printer, Euro } from 'lucide-react';
-import { toast } from 'sonner';
 
-import { Button } from '@/components/ui/button';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import AppLayout from '@/components/AppLayout';
 import { orcamentoService } from '@/services/orcamentoService';
+import { Button } from '@/components/ui/button';
+import { OrcamentoActions } from '@/components/OrcamentoActions';
 
 export default function DetalhesOrcamento() {
   const { id } = useParams<{ id: string }>();
@@ -19,14 +18,6 @@ export default function DetalhesOrcamento() {
     queryFn: () => isNovo ? null : orcamentoService.getOrcamentoById(id!),
     enabled: !isNovo && !!id,
   });
-
-  const handleImprimir = () => {
-    toast.info("Preparando impressão...");
-    // Em uma implementação real, aqui seria preparado o documento para impressão
-    setTimeout(() => {
-      toast.success("Documento enviado para impressão");
-    }, 1500);
-  };
 
   if (isLoading) {
     return (
@@ -62,20 +53,7 @@ export default function DetalhesOrcamento() {
 
   return (
     <AppLayout>
-      {!isNovo && (
-        <div className="p-6 pb-0">
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={handleImprimir}>
-              <Printer className="mr-2 h-4 w-4" />
-              Imprimir
-            </Button>
-            <Button variant="outline" onClick={() => navigate('/orcamentos')}>
-              <Euro className="mr-2 h-4 w-4" />
-              Todos Orçamentos
-            </Button>
-          </div>
-        </div>
-      )}
+      <OrcamentoActions isNovo={isNovo} />
       
       <OrcamentoForm 
         orcamentoId={isNovo ? undefined : id} 
