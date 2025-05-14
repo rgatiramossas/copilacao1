@@ -19,10 +19,8 @@ export default function Orcamentos() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [orcamentoParaExcluir, setOrcamentoParaExcluir] = useState<string | null>(null);
 
-  // Definir título da página
   document.title = "Orçamentos";
 
-  // Buscar dados
   const { data: orcamentos = [], refetch } = useQuery({
     queryKey: ['orcamentos'],
     queryFn: () => orcamentoService.getOrcamentos(),
@@ -33,7 +31,6 @@ export default function Orcamentos() {
     queryFn: () => clienteService.getClientes(),
   });
 
-  // Handlers
   const handleNovoOrcamento = () => {
     navigate('/orcamentos/novo');
   };
