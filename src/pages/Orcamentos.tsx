@@ -157,8 +157,8 @@ export default function Orcamentos() {
       </Dialog>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] max-h-[95vh] p-0">
-          <DialogHeader className="p-4 pb-2">
+        <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] max-h-[95vh] p-0 overflow-y-auto">
+          <DialogHeader className="p-4 pb-2 sticky top-0 bg-background z-10">
             <DialogTitle>Novo Orçamento</DialogTitle>
           </DialogHeader>
           <div className="overflow-x-auto">
