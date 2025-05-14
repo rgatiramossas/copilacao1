@@ -38,7 +38,7 @@ export function DanosVeiculoGrid({
   return (
     <div className="grid grid-cols-3 gap-2 mt-4 max-w-[1400px] mx-auto" style={{ minWidth: 'min-content' }}>
       {/* Linha 1 */}
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">
             <span className="hidden sm:inline">{getNomePeca('paraLamaEsquerdo')}</span>
@@ -53,7 +53,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('capo')}</h3>
           <DanoPecaEditor 
@@ -65,7 +65,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('paraLamaDireito')}</h3>
           <DanoPecaEditor 
@@ -78,7 +78,7 @@ export function DanosVeiculoGrid({
       </Card>
 
       {/* Linha 2 */}
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('colunaEsquerda')}</h3>
           <DanoPecaEditor 
@@ -90,7 +90,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('teto')}</h3>
           <DanoPecaEditor 
@@ -102,7 +102,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('colunaDireita')}</h3>
           <DanoPecaEditor 
@@ -115,7 +115,7 @@ export function DanosVeiculoGrid({
       </Card>
 
       {/* Linha 3 */}
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">
             <span className="hidden sm:inline">{getNomePeca('portaDianteiraEsquerda')}</span>
@@ -131,7 +131,7 @@ export function DanosVeiculoGrid({
       </Card>
 
       {/* Espaço para foto */}
-      <Card className="flex items-center justify-center flex-col h-full">
+      <Card className="flex items-center justify-center flex-col h-[180px]">
         <CardContent className="p-4 flex flex-col items-center justify-center flex-1 flex-col justify-between">
           <Image className="h-12 w-12 text-gray-400" />
           <p className="text-sm text-gray-500 mt-2">Foto do veículo</p>
@@ -146,7 +146,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">
             <span className="hidden sm:inline">{getNomePeca('portaDianteiraDireita')}</span>
@@ -162,7 +162,7 @@ export function DanosVeiculoGrid({
       </Card>
 
       {/* Linha 4 */}
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">
             <span className="hidden sm:inline">{getNomePeca('portaTraseiraEsquerda')}</span>
@@ -177,7 +177,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">
             <span className="hidden sm:inline">{getNomePeca('portaMalasSuperior')}</span>
@@ -192,7 +192,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">
             <span className="hidden sm:inline">{getNomePeca('portaTraseiraDireita')}</span>
@@ -208,7 +208,7 @@ export function DanosVeiculoGrid({
       </Card>
 
       {/* Linha 5 */}
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('lateralEsquerda')}</h3>
           <DanoPecaEditor 
@@ -220,7 +220,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('portaMalasInferior')}</h3>
           <DanoPecaEditor 
@@ -232,7 +232,7 @@ export function DanosVeiculoGrid({
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-[180px]">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <h3 className="font-medium mb-2">{getNomePeca('lateralDireita')}</h3>
           <DanoPecaEditor 
