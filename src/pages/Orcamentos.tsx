@@ -77,8 +77,8 @@ export default function Orcamentos() {
 
   return (
     <AppLayout>
-      <div className="px-6 pt-2">
-        <div className="flex justify-end items-center mb-6">
+      <div className="px-6">
+        <div className="flex justify-end items-center mb-4">
           <Button onClick={handleNovoOrcamento}>
             <Plus className="mr-2 h-4 w-4" />
             Novo Orçamento
