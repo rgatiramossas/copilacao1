@@ -1,3 +1,4 @@
+
 import { OrcamentoDetalhado, PecaVeiculo, DanoVeiculo } from '@/types';
 
 // Define as peças do veículo para o grid
@@ -88,7 +89,7 @@ export const hailCalculation = (
     };
 
     // Validações para evitar referências a valores inexistentes
-    if (!size || !dents || !awTable[size]) {
+    if (!size || !dents || !baseData[isVertical ? 'vertical' : 'horizontal'][size]) {
         console.error(`Tamanho inválido: ${size}mm`);
         return { aw: 0, hours: 0, cost: 0 };
     }
