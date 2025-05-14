@@ -226,8 +226,8 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
   };
 
   return (
-    <div className="container mx-auto px-4 py-2 lg:p-6 space-y-4">
-      <div className="bg-white p-4 rounded-lg shadow-sm">
+    <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden bg-gray-50">
+      <div className="bg-white p-4 shadow-sm">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
             {orcamentoId 
@@ -243,8 +243,8 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="bg-white rounded-lg shadow-sm px-4 py-5 sm:p-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
+          <div className="flex-1 overflow-y-auto bg-white px-4 py-5 sm:p-6">
           {/* Cabeçalho do formulário */}
           <OrcamentoCabecalho 
             form={form} 
@@ -273,7 +273,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
           </div>
           
           {/* Botões de ação */}
-          <div className="bg-white rounded-lg shadow-sm p-4 sticky bottom-0 flex flex-col sm:flex-row justify-end gap-3 border-t">
+          <div className="bg-white p-4 flex flex-col sm:flex-row justify-end gap-3 border-t shadow-[0_-1px_3px_rgba(0,0,0,0.1)]">
             <Button 
               type="button" 
               variant="outline" 
