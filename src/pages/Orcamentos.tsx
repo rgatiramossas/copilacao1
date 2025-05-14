@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { orcamentoService } from '@/services/orcamentoService';
 import { clienteService } from '@/services/clienteService';
@@ -19,8 +19,10 @@ export default function Orcamentos() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [orcamentoParaExcluir, setOrcamentoParaExcluir] = useState<string | null>(null);
 
+  // Definir título da página
   document.title = "Orçamentos";
 
+  // Consultas
   const { data: orcamentos = [], refetch } = useQuery({
     queryKey: ['orcamentos'],
     queryFn: () => orcamentoService.getOrcamentos(),
@@ -31,19 +33,14 @@ export default function Orcamentos() {
     queryFn: () => clienteService.getClientes(),
   });
 
-  const handleNovoOrcamento = () => {
-    navigate('/orcamentos/novo');
-  };
+  // Handlers
+  const handleNovoOrcamento = () => navigate('/orcamentos/novo');
 
-  const handleVerDetalhes = (id: string) => {
-    navigate(`/orcamentos/${id}`);
-  };
+  const handleVerDetalhes = (id: string) => navigate(`/orcamentos/${id}`);
 
   const handleImprimir = () => {
     toast.info("Preparando impressão...");
-    setTimeout(() => {
-      toast.success("Documento enviado para impressão");
-    }, 1500);
+    setTimeout(() => toast.success("Documento enviado para impressão"), 1500);
   };
 
   const handleExcluir = (id: string) => {
@@ -66,16 +63,20 @@ export default function Orcamentos() {
   };
 
   return (
-    <AppLayout>
-      <div className="flex-1 p-4 md:p-8">
-        <div className="flex justify-end mb-6">
-          <Button onClick={handleNovoOrcamento}>
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Orçamentos</h1>
+          <Button 
+            onClick={handleNovoOrcamento}
+            className="bg-primary hover:bg-primary/90"
+          >
             <Plus className="mr-2 h-4 w-4" />
             Novo Orçamento
           </Button>
         </div>
 
-        <div className="rounded-md border bg-white">
+        <div className="bg-white rounded-lg shadow">
           <Table>
             <TableHeader>
               <TableRow>
@@ -91,8 +92,17 @@ export default function Orcamentos() {
             <TableBody>
               {orcamentos.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
-                    Nenhum orçamento encontrado.
+                  <TableCell colSpan={7} className="h-32 text-center">
+                    <div className="flex flex-col items-center justify-center">
+                      <p className="text-gray-500 mb-2">Nenhum orçamento encontrado</p>
+                      <Button 
+                        variant="outline" 
+                        onClick={handleNovoOrcamento}
+                        className="mt-2"
+                      >
+                        Criar primeiro orçamento
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ) : (
@@ -118,6 +128,6 @@ export default function Orcamentos() {
           onCancel={() => setIsDeleteDialogOpen(false)}
         />
       </Dialog>
-    </AppLayout>
+    </div>
   );
 }
