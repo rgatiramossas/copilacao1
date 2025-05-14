@@ -226,22 +226,23 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">
+    <div className="container mx-auto p-4 lg:p-6 space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-lg shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900">
           {orcamentoId 
             ? (isEditing ? "Editar Orçamento" : "Detalhes do Orçamento") 
             : "Novo Orçamento"}
         </h1>
         {orcamentoId && isReadOnly && (
-          <Button onClick={() => setIsEditing(true)}>
+          <Button onClick={() => setIsEditing(true)} className="w-full sm:w-auto">
             Editar
           </Button>
         )}
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="bg-white rounded-lg shadow-sm p-6">
           {/* Cabeçalho do formulário */}
           <OrcamentoCabecalho 
             form={form} 
@@ -267,18 +268,21 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false }: Orcam
             />
           </div>
 
+          </div>
+          
           {/* Botões de ação */}
-          <div className="flex justify-end space-x-4">
+          <div className="bg-white rounded-lg shadow-sm p-4 flex flex-col sm:flex-row justify-end gap-3">
             <Button 
               type="button" 
               variant="outline" 
               onClick={() => navigate('/orcamentos')}
+              className="w-full sm:w-auto"
             >
               Cancelar
             </Button>
             
             {isEditing && (
-              <Button type="submit">
+              <Button type="submit" className="w-full sm:w-auto">
                 <Save className="mr-2 h-4 w-4" />
                 Salvar
               </Button>
