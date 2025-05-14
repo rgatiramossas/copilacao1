@@ -60,7 +60,6 @@ const DetalhesOrdemServico = () => {
     );
   }
 
-  // Verificar permissões do usuário
   const podeEditar = ordemServicoService.podeEditarOS(userRole || '', ordem.status);
   
   const formatarData = (dataString?: string) => {
@@ -132,22 +131,11 @@ const DetalhesOrdemServico = () => {
               <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
               <h1 className="text-xl sm:text-2xl font-bold">OS #{ordem.id}</h1>
             </div>
-            <Badge className={`${getStatusClassName(ordem.status)}`}>
+            <Badge className={getStatusClassName(ordem.status)}>
               {getStatusLabel(ordem.status)}
             </Badge>
           </div>
-        </div>
-      </div>
-    </AppLayout>
-  );
-            <div className="flex items-center gap-2">
-              <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
-              <h1 className="text-xl sm:text-2xl font-bold">OS #{ordem.id}</h1>
-            </div>
-            <Badge className={`${getStatusClassName(ordem.status)}`}>
-              {getStatusLabel(ordem.status)}
-            </Badge>
-          </div>
+          
           {podeEditar && (
             <div className="flex gap-2 w-full sm:w-auto">
               <Button className="flex-1 sm:flex-none" variant="outline" onClick={handleEditar}>
@@ -161,156 +149,157 @@ const DetalhesOrdemServico = () => {
             </div>
           )}
         </div>
-      
+
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
-        <Card className="shadow-sm">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Informações Básicas</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div>
-              <p className="text-sm text-muted-foreground">Data de Abertura</p>
-              <p className="font-medium">{formatarData(ordem.dataAbertura)}</p>
-            </div>
-            
-            <div>
-              <p className="text-sm text-muted-foreground">Tipo de Serviço</p>
-              <p className="font-medium">{ordem.tipoServico}</p>
-            </div>
-            
-            {ordem.dataEncerramento && (
+          <Card className="shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Informações Básicas</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
               <div>
-                <p className="text-sm text-muted-foreground">Data de Encerramento</p>
-                <p className="font-medium">{formatarData(ordem.dataEncerramento)}</p>
-              </div>
-            )}
-            
-            <div>
-              <p className="text-sm text-muted-foreground">Preço Técnico</p>
-              <p className="font-medium">{formatarPreco(ordem.precoTecnico)}</p>
-            </div>
-            
-            {userRole === 'administrador' && (
-              <div>
-                <p className="text-sm text-muted-foreground">Preço Administrativo</p>
-                <p className="font-medium">{formatarPreco(ordem.precoAdministrativo)}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Dados do Cliente</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {cliente ? (
-              <>
-                <div>
-                  <p className="text-sm text-muted-foreground">Nome</p>
-                  <p className="font-medium">{cliente.nome}</p>
-                </div>
-                
-                <div>
-                  <p className="text-sm text-muted-foreground">Telefone</p>
-                  <p className="font-medium">{cliente.telefone || '-'}</p>
-                </div>
-                
-                <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="font-medium">{cliente.email || '-'}</p>
-                </div>
-                
-                <div>
-                  <p className="text-sm text-muted-foreground">Endereço</p>
-                  <p className="font-medium">{cliente.endereco}</p>
-                  <p>{cliente.cidade}, {cliente.estado}, {cliente.cep}</p>
-                </div>
-                
-                <Button 
-                  variant="outline" 
-                  className="w-full mt-2"
-                  onClick={() => navigate(`/clientes/${cliente.id}`)}
-                >
-                  Ver Perfil Completo
-                </Button>
-              </>
-            ) : (
-              <p>Cliente não encontrado</p>
-            )}
-          </CardContent>
-        </Card>
-        
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Dados do Veículo</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div>
-                <p className="text-sm text-muted-foreground">Veículo</p>
-                <p className="font-medium">{ordem.veiculo}</p>
+                <p className="text-sm text-muted-foreground">Data de Abertura</p>
+                <p className="font-medium">{formatarData(ordem.dataAbertura)}</p>
               </div>
               
               <div>
-                <p className="text-sm text-muted-foreground">Placa</p>
-                <p className="font-medium">{ordem.placa || '-'}</p>
+                <p className="text-sm text-muted-foreground">Tipo de Serviço</p>
+                <p className="font-medium">{ordem.tipoServico}</p>
               </div>
               
+              {ordem.dataEncerramento && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Data de Encerramento</p>
+                  <p className="font-medium">{formatarData(ordem.dataEncerramento)}</p>
+                </div>
+              )}
+              
               <div>
-                <p className="text-sm text-muted-foreground">Chassi</p>
-                <p className="font-medium">{ordem.chassi || '-'}</p>
+                <p className="text-sm text-muted-foreground">Preço Técnico</p>
+                <p className="font-medium">{formatarPreco(ordem.precoTecnico)}</p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Observações</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {ordem.observacoes ? (
-              <p className="whitespace-pre-line">{ordem.observacoes}</p>
-            ) : (
-              <p className="text-muted-foreground">Nenhuma observação registrada.</p>
-            )}
-          </CardContent>
-        </Card>
-        
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Fotos</CardTitle>
-            <CardDescription>Galeria de fotos do serviço</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {ordem.fotos && ordem.fotos.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
-                {ordem.fotos.map((foto, index) => (
-                  <div key={index} className="relative aspect-square group overflow-hidden rounded-lg border hover:border-primary/50 transition-colors">
-                    <img
-                      src={foto}
-                      alt={`Foto ${index + 1}`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+              
+              {userRole === 'administrador' && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Preço Administrativo</p>
+                  <p className="font-medium">{formatarPreco(ordem.precoAdministrativo)}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Dados do Cliente</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {cliente ? (
+                <>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Nome</p>
+                    <p className="font-medium">{cliente.nome}</p>
                   </div>
-                ))}
+                  
+                  <div>
+                    <p className="text-sm text-muted-foreground">Telefone</p>
+                    <p className="font-medium">{cliente.telefone || '-'}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="font-medium">{cliente.email || '-'}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-muted-foreground">Endereço</p>
+                    <p className="font-medium">{cliente.endereco}</p>
+                    <p>{cliente.cidade}, {cliente.estado}, {cliente.cep}</p>
+                  </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full mt-2"
+                    onClick={() => navigate(`/clientes/${cliente.id}`)}
+                  >
+                    Ver Perfil Completo
+                  </Button>
+                </>
+              ) : (
+                <p>Cliente não encontrado</p>
+              )}
+            </CardContent>
+          </Card>
+          
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Dados do Veículo</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-3">
+                <div>
+                  <p className="text-sm text-muted-foreground">Veículo</p>
+                  <p className="font-medium">{ordem.veiculo}</p>
+                </div>
+                
+                <div>
+                  <p className="text-sm text-muted-foreground">Placa</p>
+                  <p className="font-medium">{ordem.placa || '-'}</p>
+                </div>
+                
+                <div>
+                  <p className="text-sm text-muted-foreground">Chassi</p>
+                  <p className="font-medium">{ordem.chassi || '-'}</p>
+                </div>
               </div>
-            ) : (
-              <p className="text-muted-foreground">Nenhuma foto disponível.</p>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+          
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Observações</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {ordem.observacoes ? (
+                <p className="whitespace-pre-line">{ordem.observacoes}</p>
+              ) : (
+                <p className="text-muted-foreground">Nenhuma observação registrada.</p>
+              )}
+            </CardContent>
+          </Card>
+          
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Fotos</CardTitle>
+              <CardDescription>Galeria de fotos do serviço</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {ordem.fotos && ordem.fotos.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
+                  {ordem.fotos.map((foto, index) => (
+                    <div key={index} className="relative aspect-square group overflow-hidden rounded-lg border hover:border-primary/50 transition-colors">
+                      <img
+                        src={foto}
+                        alt={`Foto ${index + 1}`}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground">Nenhuma foto disponível.</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+        
+        {podeEditar && (
+          <EditarOrdemServicoDialog
+            isOpen={dialogEditarAberta}
+            onClose={() => setDialogEditarAberta(false)}
+            ordem={ordem}
+            onSucesso={onOSAtualizada}
+          />
+        )}
       </div>
-      
-      {podeEditar && (
-        <EditarOrdemServicoDialog
-          isOpen={dialogEditarAberta}
-          onClose={() => setDialogEditarAberta(false)}
-          ordem={ordem}
-          onSucesso={onOSAtualizada}
-        />
-      )}
     </AppLayout>
   );
 };
