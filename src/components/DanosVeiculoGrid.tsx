@@ -40,7 +40,10 @@ export function DanosVeiculoGrid({
       {/* Linha 1 */}
       <Card className="flex flex-col h-full">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
-          <h3 className="font-medium mb-2">{getNomePeca('paraLamaEsquerdo')}</h3>
+          <h3 className="font-medium mb-2">
+            <span className="hidden sm:inline">{getNomePeca('paraLamaEsquerdo')}</span>
+            <span className="sm:hidden">Para-lama Esq.</span>
+          </h3>
           <DanoPecaEditor 
             dano={findDano('paraLamaEsquerdo')} 
             onChange={(tamanho, valor) => handleAmassadosChange('paraLamaEsquerdo', tamanho, valor)}
@@ -114,7 +117,10 @@ export function DanosVeiculoGrid({
       {/* Linha 3 */}
       <Card className="flex flex-col h-full">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
-          <h3 className="font-medium mb-2">{getNomePeca('portaDianteiraEsquerda')}</h3>
+          <h3 className="font-medium mb-2">
+            <span className="hidden sm:inline">{getNomePeca('portaDianteiraEsquerda')}</span>
+            <span className="sm:hidden">Porta Diant. Esq.</span>
+          </h3>
           <DanoPecaEditor 
             dano={findDano('portaDianteiraEsquerda')} 
             onChange={(tamanho, valor) => handleAmassadosChange('portaDianteiraEsquerda', tamanho, valor)}
@@ -142,7 +148,10 @@ export function DanosVeiculoGrid({
 
       <Card className="flex flex-col h-full">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
-          <h3 className="font-medium mb-2">{getNomePeca('portaDianteiraDireita')}</h3>
+          <h3 className="font-medium mb-2">
+            <span className="hidden sm:inline">{getNomePeca('portaDianteiraDireita')}</span>
+            <span className="sm:hidden">Porta Diant. Dir.</span>
+          </h3>
           <DanoPecaEditor 
             dano={findDano('portaDianteiraDireita')} 
             onChange={(tamanho, valor) => handleAmassadosChange('portaDianteiraDireita', tamanho, valor)}
@@ -155,7 +164,10 @@ export function DanosVeiculoGrid({
       {/* Linha 4 */}
       <Card className="flex flex-col h-full">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
-          <h3 className="font-medium mb-2">{getNomePeca('portaTraseiraEsquerda')}</h3>
+          <h3 className="font-medium mb-2">
+            <span className="hidden sm:inline">{getNomePeca('portaTraseiraEsquerda')}</span>
+            <span className="sm:hidden">Porta Tras. Esq.</span>
+          </h3>
           <DanoPecaEditor 
             dano={findDano('portaTraseiraEsquerda')} 
             onChange={(tamanho, valor) => handleAmassadosChange('portaTraseiraEsquerda', tamanho, valor)}
@@ -167,7 +179,10 @@ export function DanosVeiculoGrid({
 
       <Card className="flex flex-col h-full">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
-          <h3 className="font-medium mb-2">{getNomePeca('portaMalasSuperior')}</h3>
+          <h3 className="font-medium mb-2">
+            <span className="hidden sm:inline">{getNomePeca('portaMalasSuperior')}</span>
+            <span className="sm:hidden">P. Malas Sup.</span>
+          </h3>
           <DanoPecaEditor 
             dano={findDano('portaMalasSuperior')} 
             onChange={(tamanho, valor) => handleAmassadosChange('portaMalasSuperior', tamanho, valor)}
@@ -179,7 +194,10 @@ export function DanosVeiculoGrid({
 
       <Card className="flex flex-col h-full">
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
-          <h3 className="font-medium mb-2">{getNomePeca('portaTraseiraDireita')}</h3>
+          <h3 className="font-medium mb-2">
+            <span className="hidden sm:inline">{getNomePeca('portaTraseiraDireita')}</span>
+            <span className="sm:hidden">Porta Tras. Dir.</span>
+          </h3>
           <DanoPecaEditor 
             dano={findDano('portaTraseiraDireita')} 
             onChange={(tamanho, valor) => handleAmassadosChange('portaTraseiraDireita', tamanho, valor)}
