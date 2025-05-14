@@ -136,6 +136,18 @@ const DetalhesOrdemServico = () => {
               {getStatusLabel(ordem.status)}
             </Badge>
           </div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+            <div className="flex items-center gap-2">
+              <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
+              <h1 className="text-xl sm:text-2xl font-bold">OS #{ordem.id}</h1>
+            </div>
+            <Badge className={`${getStatusClassName(ordem.status)}`}>
+              {getStatusLabel(ordem.status)}
+            </Badge>
+          </div>
           {podeEditar && (
             <div className="flex gap-2 w-full sm:w-auto">
               <Button className="flex-1 sm:flex-none" variant="outline" onClick={handleEditar}>
