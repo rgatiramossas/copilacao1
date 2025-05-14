@@ -226,21 +226,7 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false, onCance
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      <div className="bg-white p-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-            {orcamentoId 
-              ? (isEditing ? "Editar Orçamento" : "Detalhes do Orçamento") 
-              : "Novo Orçamento"}
-          </h1>
-          {orcamentoId && isReadOnly && (
-            <Button onClick={() => setIsEditing(true)} className="w-full sm:w-auto">
-              Editar
-            </Button>
-          )}
-        </div>
-      </div>
+    <div className="flex flex-col">
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col flex-1">
