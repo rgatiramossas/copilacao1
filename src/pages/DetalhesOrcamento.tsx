@@ -73,6 +73,7 @@ export default function DetalhesOrcamento() {
             <OrcamentoForm 
               orcamentoId={isNovo ? undefined : id} 
               isReadOnly={!isNovo}
+              onCancel={() => navigate('/orcamentos')}
             />
           </CardContent>
         </Card>
