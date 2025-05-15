@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import { orcamentoService } from '@/services/orcamentoService';
@@ -54,6 +54,8 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
     );
   }
 
+  if (!open) return null;
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] h-[95vh] p-0">
