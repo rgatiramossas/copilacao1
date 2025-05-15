@@ -66,6 +66,7 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
               <CardContent className={`${isMobile ? 'p-3' : 'p-6'}`}>
                 <OrcamentoForm 
                   orcamentoId={id}
+                  orcamento={orcamento}
                   isReadOnly={true}
                   onCancel={() => onOpenChange(false)}
                 />

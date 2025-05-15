@@ -37,11 +37,12 @@ const formSchema = z.object({
 
 interface OrcamentoFormProps {
   orcamentoId?: string;
+  orcamento?: OrcamentoDetalhado;
   isReadOnly?: boolean;
   onCancel: () => void;
 }
 
-export default function OrcamentoForm({ orcamentoId, isReadOnly = false, onCancel }: OrcamentoFormProps) {
+export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = false, onCancel }: OrcamentoFormProps) {
   const navigate = useNavigate();
   const [clientes, setClientes] = useState<any[]>([]);
   const [danos, setDanos] = useState<DanoVeiculo[]>([]);
@@ -52,7 +53,14 @@ export default function OrcamentoForm({ orcamentoId, isReadOnly = false, onCance
   // Inicializa o formulário com react-hook-form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: orcamento ? {
+      data: new Date(orcamento.data),
+      clienteId: orcamento.clienteId,
+      veiculo: orcamento.veiculo,
+      placa: orcamento.placa || "",
+      chassi: orcamento.chassi || "",
+      foto: orcamento.foto,
+    } : {
       data: new Date(),
       veiculo: "",
       placa: "",
