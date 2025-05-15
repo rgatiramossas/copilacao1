@@ -180,22 +180,26 @@ export default function Orcamentos() {
         />
       </Dialog>
 
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] h-[95vh] p-0">
-          <DialogHeader className="p-4 pb-2 sticky top-0 bg-background z-10">
-            <DialogTitle>{selectedOrcamentoId ? 'Detalhes do Orçamento' : 'Novo Orçamento'}</DialogTitle>
-          </DialogHeader>
-          <div className="overflow-auto h-[calc(95vh-4rem)]">
-            <div className="min-w-[300px] sm:min-w-[800px] p-4 pt-2">
-              {selectedOrcamentoId ? (
-                <DetalhesOrcamento orcamentoId={selectedOrcamentoId} onClose={() => setIsModalOpen(false)} />
-              ) : (
+      {selectedOrcamentoId ? (
+        <DetalhesOrcamento 
+          id={selectedOrcamentoId} 
+          open={isModalOpen} 
+          onOpenChange={setIsModalOpen} 
+        />
+      ) : (
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] h-[95vh] p-0">
+            <DialogHeader className="p-4 pb-2 sticky top-0 bg-background z-10">
+              <DialogTitle>Novo Orçamento</DialogTitle>
+            </DialogHeader>
+            <div className="overflow-auto h-[calc(95vh-4rem)]">
+              <div className="min-w-[300px] sm:min-w-[800px] p-4 pt-2">
                 <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
-              )}
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
