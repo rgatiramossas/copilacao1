@@ -1,18 +1,15 @@
-
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Home, ClipboardList, LogOut, UserCircle, FileText, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-
 interface BottomNavItemProps {
   to: string;
   label: string;
   icon: React.ReactNode;
   active?: boolean;
 }
-
 const BottomNavItem = ({
   to,
   label,
@@ -26,7 +23,6 @@ const BottomNavItem = ({
       </div>
     </Link>;
 };
-
 const AppLayout: React.FC<{
   children: React.ReactNode;
 }> = ({
@@ -40,7 +36,6 @@ const AppLayout: React.FC<{
   const isActive = (path: string) => {
     return location.pathname === path;
   };
-  
   return <div className="flex flex-col h-screen bg-gray-50">
       {/* Conteúdo principal */}
       <main className="flex-1 flex flex-col overflow-hidden pb-16">
@@ -48,7 +43,7 @@ const AppLayout: React.FC<{
         <header className="bg-white shadow-sm h-16 flex items-center px-4">
           <div className="flex w-full justify-between items-center">
             <div className="flex items-center">
-              <img src="/logo.svg" alt="Euro Dent Experts" className="h-12 w-auto" />
+              <img alt="Euro Dent Experts" className="h-12 w-auto" src="/lovable-uploads/ff0531e2-c68e-4887-ad80-058e148c18d5.png" />
             </div>
             
             <div className="flex items-center space-x-3">
@@ -85,5 +80,4 @@ const AppLayout: React.FC<{
       </nav>
     </div>;
 };
-
 export default AppLayout;
