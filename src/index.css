@@ -1,6 +1,42 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
+
+/* Mobile-first styles */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    height: 100vh;
+    height: -webkit-fill-available;
+    overflow: hidden;
+  }
+  
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents zoom on focus in iOS */
+  }
+}
+
+/* Mobile optimizations */
+.mobile-safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+}
+
+.mobile-pull-refresh {
+  overscroll-behavior-y: contain;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Improve touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
