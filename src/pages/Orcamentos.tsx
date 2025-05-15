@@ -1,6 +1,5 @@
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Eye, Plus, Printer, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -18,11 +17,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import { Badge } from '@/components/ui/badge';
 import { OrcamentoDetalhado } from '@/types';
+import DetalhesOrcamento from '@/components/DetalhesOrcamento';
 
 export default function Orcamentos() {
   const navigate = useNavigate();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [orcamentoParaExcluir, setOrcamentoParaExcluir] = useState<string | null>(null);
+  const { modalOpen } = useParams();
 
   document.title = "Orçamentos";
 
@@ -36,10 +37,29 @@ export default function Orcamentos() {
     queryFn: () => clienteService.getClientes(),
   });
 
+  const [selectedOrcamentoId, setSelectedOrcamentoId] = useState<string | undefined>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleNovoOrcamento = () => setIsModalOpen(true);
-  const handleVerDetalhes = (id: string) => navigate(`/orcamentos/${id}`);
-  
+
+  useEffect(() => {
+    if (modalOpen === 'novo') {
+      setSelectedOrcamentoId(undefined);
+      setIsModalOpen(true);
+    } else if (modalOpen) {
+      setSelectedOrcamentoId(modalOpen);
+      setIsModalOpen(true);
+    }
+  }, [modalOpen]);
+
+
+  const handleNovoOrcamento = () => {
+    setSelectedOrcamentoId(undefined);
+    setIsModalOpen(true);
+  }
+  const handleVerDetalhes = (id: string) => {
+    setSelectedOrcamentoId(id);
+    setIsModalOpen(true);
+  };
+
   // Updated to accept OrcamentoDetalhado instead of Orcamento
   const handleImprimir = (orcamento?: OrcamentoDetalhado) => {
     toast.info("Preparando impressão...");
@@ -137,7 +157,7 @@ export default function Orcamentos() {
                 </TableHeader>
                 <TableBody>
                   {orcamentos.map((orcamento) => (
-                    <OrcamentoItem 
+                    <OrcamentoItem
                       key={orcamento.id}
                       orcamento={orcamento}
                       clientes={clientes}
@@ -154,7 +174,7 @@ export default function Orcamentos() {
       </div>
 
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <ConfirmDeleteDialog 
+        <ConfirmDeleteDialog
           onConfirm={confirmarExclusao}
           onCancel={() => setIsDeleteDialogOpen(false)}
         />
@@ -163,11 +183,15 @@ export default function Orcamentos() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] h-[95vh] p-0">
           <DialogHeader className="p-4 pb-2 sticky top-0 bg-background z-10">
-            <DialogTitle>Novo Orçamento</DialogTitle>
+            <DialogTitle>{selectedOrcamentoId ? 'Detalhes do Orçamento' : 'Novo Orçamento'}</DialogTitle>
           </DialogHeader>
           <div className="overflow-auto h-[calc(95vh-4rem)]">
             <div className="min-w-[300px] sm:min-w-[800px] p-4 pt-2">
-              <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
+              {selectedOrcamentoId ? (
+                <DetalhesOrcamento orcamentoId={selectedOrcamentoId} onClose={() => setIsModalOpen(false)} />
+              ) : (
+                <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
+              )}
             </div>
           </div>
         </DialogContent>
