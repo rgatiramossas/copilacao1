@@ -40,6 +40,7 @@ interface OrcamentoFormProps {
   orcamento?: OrcamentoDetalhado;
   isReadOnly?: boolean;
   onCancel: () => void;
+  onSave?: () => void;
 }
 
 export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = false, onCancel }: OrcamentoFormProps) {
@@ -214,6 +215,7 @@ export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = fal
         if (result) {
           toast.success("Orçamento atualizado com sucesso!");
           setIsEditing(false);
+          onSave?.();
         } else {
           toast.error("Erro ao atualizar orçamento!");
         }

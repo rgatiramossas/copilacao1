@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import OrcamentoForm from '@/components/OrcamentoForm';
@@ -6,6 +5,8 @@ import { orcamentoService } from '@/services/orcamentoService';
 import { OrcamentoActions } from '@/components/OrcamentoActions';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 interface DetalhesOrcamentoProps {
   id: string;
@@ -15,6 +16,7 @@ interface DetalhesOrcamentoProps {
 
 export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOrcamentoProps) {
   const isMobile = useIsMobile();
+  const [isEditing, setIsEditing] = useState(false);
 
   const { data: orcamento, isLoading, error } = useQuery({
     queryKey: ['orcamento', id],
@@ -56,7 +58,13 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
       <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] h-[95vh] p-0">
         <DialogHeader className="p-4 pb-2 sticky top-0 bg-background z-10">
           <DialogTitle>Orçamento #{id}</DialogTitle>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <Button 
+              variant="outline" 
+              onClick={() => setIsEditing(prev => !prev)}
+            >
+              {isEditing ? 'Cancelar' : 'Editar'}
+            </Button>
             <OrcamentoActions isNovo={false} />
           </div>
         </DialogHeader>
@@ -67,7 +75,7 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
                 <OrcamentoForm 
                   orcamentoId={id}
                   orcamento={orcamento}
-                  isReadOnly={true}
+                  isReadOnly={!isEditing}
                   onCancel={() => onOpenChange(false)}
                 />
               </CardContent>
