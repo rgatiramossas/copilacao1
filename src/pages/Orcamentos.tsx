@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -16,6 +17,7 @@ import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 import { Card, CardContent } from '@/components/ui/card';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import { Badge } from '@/components/ui/badge';
+import { Orcamento } from '@/types';
 
 export default function Orcamentos() {
   const navigate = useNavigate();
@@ -37,7 +39,9 @@ export default function Orcamentos() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleNovoOrcamento = () => setIsModalOpen(true);
   const handleVerDetalhes = (id: string) => navigate(`/orcamentos/${id}`);
-  const handleImprimir = () => {
+  
+  // Modify the handleImprimir function to accept an orcamento parameter
+  const handleImprimir = (orcamento?: Orcamento) => {
     toast.info("Preparando impressão...");
     setTimeout(() => toast.success("Documento enviado para impressão"), 1500);
   };
