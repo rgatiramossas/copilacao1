@@ -17,6 +17,7 @@ interface DetalhesOrcamentoProps {
 export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOrcamentoProps) {
   const isMobile = useIsMobile();
   const [isEditing, setIsEditing] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: orcamento, isLoading, error } = useQuery({
     queryKey: ['orcamento', id],
@@ -76,7 +77,14 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
                   orcamentoId={id}
                   orcamento={orcamento}
                   isReadOnly={!isEditing}
-                  onCancel={() => onOpenChange(false)}
+                  onCancel={() => {
+                    setIsEditing(false);
+                    onOpenChange(false);
+                  }}
+                  onSave={() => {
+                    setIsEditing(false);
+                    queryClient.invalidateQueries({ queryKey: ['orcamento', id] });
+                  }}
                 />
               </CardContent>
             </Card>
