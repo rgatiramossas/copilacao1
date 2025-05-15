@@ -54,7 +54,7 @@ export default function DetalhesOrcamento() {
   }
 
   return (
-    <div className={`p-4 md:p-6 space-y-4 ${isMobile ? 'max-w-full' : 'max-w-6xl mx-auto'}`}>
+    <div className={`h-full overflow-auto p-4 md:p-6 space-y-4 ${isMobile ? 'max-w-full' : 'max-w-6xl mx-auto'}`}>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 className="text-2xl md:text-3xl font-bold">
           {isNovo ? 'Novo Orçamento' : `Orçamento #${id}`}

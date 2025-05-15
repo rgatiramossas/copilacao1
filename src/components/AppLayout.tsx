@@ -75,7 +75,7 @@ const AppLayout: React.FC<{
         </header>
 
         {/* Conteúdo com scroll */}
-        <div className="flex-1 overflow-auto p-4 bg-gray-50">
+        <div className="flex-1 bg-gray-50">
           {children}
         </div>
       </main>
