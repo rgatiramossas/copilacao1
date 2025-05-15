@@ -17,7 +17,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import { Badge } from '@/components/ui/badge';
 import { OrcamentoDetalhado } from '@/types';
-import DetalhesOrcamento from '@/components/DetalhesOrcamento';
+import DetalhesOrcamento from './DetalhesOrcamento';
 
 export default function Orcamentos() {
   const navigate = useNavigate();
