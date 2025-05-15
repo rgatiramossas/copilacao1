@@ -49,7 +49,11 @@ export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = fal
   const [danos, setDanos] = useState<DanoVeiculo[]>([]);
   const [totalAW, setTotalAW] = useState(0);
   const [precoEuro, setPrecoEuro] = useState(0);
-  const [isEditing, setIsEditing] = useState(!isReadOnly && !orcamentoId);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    setIsEditing(!isReadOnly);
+  }, [isReadOnly]);
 
   // Inicializa o formulário com react-hook-form
   const form = useForm<z.infer<typeof formSchema>>({

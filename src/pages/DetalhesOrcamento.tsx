@@ -17,6 +17,10 @@ interface DetalhesOrcamentoProps {
 export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOrcamentoProps) {
   const isMobile = useIsMobile();
   const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(prev => !prev);
+  };
   const queryClient = useQueryClient();
 
   const { data: orcamento, isLoading, error } = useQuery({
@@ -64,7 +68,7 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
           <div className="flex justify-end gap-2">
             <Button 
               variant="outline" 
-              onClick={() => setIsEditing(prev => !prev)}
+              onClick={handleEditClick}
             >
               {isEditing ? 'Cancelar' : 'Editar'}
             </Button>
