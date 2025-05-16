@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Login from "@/pages/Login";
@@ -19,6 +19,12 @@ import DetalhesOrdemServico from "@/pages/DetalhesOrdemServico";
 import Orcamentos from "@/pages/Orcamentos";
 import DetalhesOrcamento from "@/pages/DetalhesOrcamento";
 import GerenciamentoUsuarios from "@/pages/GerenciamentoUsuarios";
+
+// Wrapper for DetalhesOrcamento that gets id from params
+const DetalhesOrcamentoWrapper = () => {
+  const { id = "" } = useParams();
+  return <DetalhesOrcamento id={id} open={true} onOpenChange={() => {}} />;
+};
 
 const queryClient = new QueryClient();
 
@@ -81,7 +87,7 @@ const App = () => (
               <Route path="/ordens-servico" element={<OrdensServico />} />
               <Route path="/ordens-servico/:id" element={<DetalhesOrdemServico />} />
               <Route path="/orcamentos" element={<Orcamentos />} />
-              <Route path="/orcamentos/:id" element={<DetalhesOrcamento />} />
+              <Route path="/orcamentos/:id" element={<DetalhesOrcamentoWrapper />} />
             </Route>
             
             {/* Rotas protegidas para gestores */}

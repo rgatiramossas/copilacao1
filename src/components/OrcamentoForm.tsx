@@ -30,6 +30,7 @@ const formSchema = z.object({
   placa: z.string().optional(),
   chassi: z.string().optional(),
   foto: z.string().optional(),
+  observacoes: z.string().optional(),
 }).refine(data => data.placa || data.chassi, {
   message: "Placa ou Chassi é obrigatório",
   path: ["placa"],
@@ -43,7 +44,7 @@ interface OrcamentoFormProps {
   onSave?: () => void;
 }
 
-export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = false, onCancel }: OrcamentoFormProps) {
+export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = false, onCancel, onSave }: OrcamentoFormProps) {
   const navigate = useNavigate();
   const [clientes, setClientes] = useState<any[]>([]);
   const [danos, setDanos] = useState<DanoVeiculo[]>([]);
@@ -65,11 +66,13 @@ export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = fal
       placa: orcamento.placa || "",
       chassi: orcamento.chassi || "",
       foto: orcamento.foto,
+      observacoes: orcamento.observacoes || "",
     } : {
       data: new Date(),
       veiculo: "",
       placa: "",
       chassi: "",
+      observacoes: "",
     },
   });
 
@@ -116,6 +119,7 @@ export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = fal
           placa: orcamento.placa || undefined,
           chassi: orcamento.chassi || undefined,
           foto: orcamento.foto,
+          observacoes: orcamento.observacoes || "",
         });
 
         // Preenche os danos
@@ -210,6 +214,7 @@ export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = fal
         foto: values.foto,
         totalAW,
         precoEuro,
+        observacoes: values.observacoes,
       };
 
       let result;
@@ -219,7 +224,7 @@ export default function OrcamentoForm({ orcamentoId, orcamento, isReadOnly = fal
         if (result) {
           toast.success("Orçamento atualizado com sucesso!");
           setIsEditing(false);
-          onSave?.();
+          if (onSave) onSave();
         } else {
           toast.error("Erro ao atualizar orçamento!");
         }

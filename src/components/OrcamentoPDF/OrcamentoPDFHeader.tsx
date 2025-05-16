@@ -34,7 +34,7 @@ export function OrcamentoPDFHeader({
       
       {/* Barra de título principal */}
       <div className="bg-blue-600 text-white p-2 rounded flex justify-between items-center mb-4">
-        <span className="font-bold">{numeroDoPedido}.BUDGETTITLE</span>
+        <span className="font-bold">Orçamento #{numeroDoPedido}</span>
         <span>{data}</span>
       </div>
       
@@ -42,9 +42,9 @@ export function OrcamentoPDFHeader({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {/* Informações do cliente */}
         <div className="border rounded p-4">
-          <div className="text-blue-600 font-bold mb-2">BUDGET.CLIENTINFOTITLE</div>
+          <div className="text-blue-600 font-bold mb-2">Dados do Cliente</div>
           <div>
-            <span className="font-semibold">budget.clientName:</span> {clienteNome}
+            <span className="font-semibold">Cliente:</span> {clienteNome}
           </div>
           <div>
             <span className="font-semibold">Data:</span> {data}
@@ -53,7 +53,7 @@ export function OrcamentoPDFHeader({
         
         {/* Informações do veículo */}
         <div className="border rounded p-4">
-          <div className="text-blue-600 font-bold mb-2">BUDGET.VEHICLEINFOTITLE</div>
+          <div className="text-blue-600 font-bold mb-2">Dados do Veículo</div>
           <div>
             <span className="font-semibold">Veículo:</span> {veiculo}
           </div>

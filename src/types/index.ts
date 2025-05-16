@@ -82,6 +82,12 @@ export interface OrcamentoDetalhado {
   foto?: string;
   totalAW: number;
   precoEuro: number;
+  observacoes?: string;
+  itens?: Array<{
+    descricao: string;
+    quantidade: number;
+    valor: number;
+  }>;
 }
 
 export interface PecaVeiculo {
@@ -92,4 +98,3 @@ export interface PecaVeiculo {
     coluna: number;
   };
 }
-
