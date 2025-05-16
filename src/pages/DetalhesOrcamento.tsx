@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Edit, Trash2 } from 'lucide-react';
+import { FileText, Edit, Trash2, Printer } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import { orcamentoService } from '@/services/orcamentoService';
 import { clienteService } from '@/services/clienteService';
+import { OrcamentoPDFHeader } from '@/components/OrcamentoPDF/OrcamentoPDFHeader';
 
 interface DetalhesOrcamentoProps {
   id: string;
@@ -24,6 +25,7 @@ interface DetalhesOrcamentoProps {
 export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOrcamentoProps) {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [isPrintPreview, setIsPrintPreview] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: orcamento, isLoading, error } = useQuery({
@@ -53,6 +55,10 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
         toast.error("Erro ao excluir orçamento.");
       }
     }
+  };
+
+  const handlePrintPreview = () => {
+    setIsPrintPreview(true);
   };
 
   const formatarData = (dataString?: string) => {
@@ -96,6 +102,46 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
     );
   }
 
+  if (isPrintPreview) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] h-[95vh] p-0">
+          <div className="p-6 bg-white">
+            <div className="flex justify-end mb-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsPrintPreview(false)}
+                className="mr-2"
+              >
+                Voltar
+              </Button>
+              <Button onClick={() => window.print()}>
+                <Printer className="mr-2 h-4 w-4" />
+                Imprimir
+              </Button>
+            </div>
+            <div className="max-w-4xl mx-auto bg-white p-8 shadow-sm border print:shadow-none print:border-none">
+              <OrcamentoPDFHeader
+                numeroDoPedido={id}
+                data={formatarData(orcamento.data)}
+                clienteNome={cliente?.nome || 'Cliente não encontrado'}
+                veiculo={orcamento.veiculo}
+                placa={orcamento.placa}
+                chassi={orcamento.chassi}
+              />
+              
+              {/* Conteúdo adicional do PDF será adicionado aqui */}
+              <div className="mt-8">
+                <h2 className="text-xl font-bold mb-4">Detalhes do Orçamento</h2>
+                {/* Detalhes e itens do orçamento serão adicionados nas próximas etapas */}
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   if (!open) return null;
 
   return (
@@ -115,6 +161,10 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
               </div>
 
               <div className="flex gap-2 w-full md:w-auto">
+                <Button variant="outline" onClick={handlePrintPreview}>
+                  <Printer className="h-4 w-4 mr-2" />
+                  Visualizar PDF
+                </Button>
                 <Button onClick={handleEditClick}>
                   <Edit className="h-4 w-4 mr-2" />
                   {isEditing ? 'Cancelar' : 'Editar'}
@@ -251,7 +301,7 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
                             </tr>
                           </thead>
                           <tbody className="divide-y">
-                            {orcamento.itens.map((item, index) => (
+                            {orcamento.itens.map((item: any, index: number) => (
                               <tr key={index}>
                                 <td className="p-2">{item.descricao}</td>
                                 <td className="p-2 text-center">{item.quantidade}</td>
