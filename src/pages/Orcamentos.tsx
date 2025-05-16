@@ -10,13 +10,12 @@ import { orcamentoService } from '@/services/orcamentoService';
 import { clienteService } from '@/services/clienteService';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { OrcamentoItem } from '@/components/OrcamentoItem';
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 import { Card, CardContent } from '@/components/ui/card';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import { Badge } from '@/components/ui/badge';
-import { OrcamentoDetalhado } from '@/types';
 import DetalhesOrcamento from './DetalhesOrcamento';
 
 export default function Orcamentos() {
@@ -50,18 +49,17 @@ export default function Orcamentos() {
     }
   }, [modalOpen]);
 
-
   const handleNovoOrcamento = () => {
     setSelectedOrcamentoId(undefined);
     setIsModalOpen(true);
   }
+  
   const handleVerDetalhes = (id: string) => {
     setSelectedOrcamentoId(id);
     setIsModalOpen(true);
   };
 
-  // Updated to accept OrcamentoDetalhado instead of Orcamento
-  const handleImprimir = (orcamento?: OrcamentoDetalhado) => {
+  const handleImprimir = (orcamento: any) => {
     toast.info("Preparando impressão...");
     setTimeout(() => toast.success("Documento enviado para impressão"), 1500);
   };
@@ -184,17 +182,38 @@ export default function Orcamentos() {
         <DetalhesOrcamento 
           id={selectedOrcamentoId} 
           open={isModalOpen} 
-          onOpenChange={setIsModalOpen} 
+          onOpenChange={(open) => {
+            setIsModalOpen(open);
+            if (!open) {
+              navigate('/orcamentos');
+            }
+          }} 
         />
       ) : (
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog open={isModalOpen} onOpenChange={(open) => {
+          setIsModalOpen(open);
+          if (!open) {
+            navigate('/orcamentos');
+          }
+        }}>
           <DialogContent className="sm:max-w-[95%] lg:max-w-[90%] xl:max-w-[1400px] h-[95vh] p-0">
             <DialogHeader className="p-4 pb-2 sticky top-0 bg-background z-10">
               <DialogTitle>Novo Orçamento</DialogTitle>
             </DialogHeader>
             <div className="overflow-auto h-[calc(95vh-4rem)]">
               <div className="min-w-[300px] sm:min-w-[800px] p-4 pt-2">
-                <OrcamentoForm onCancel={() => setIsModalOpen(false)} />
+                <OrcamentoForm 
+                  onCancel={() => {
+                    setIsModalOpen(false);
+                    navigate('/orcamentos');
+                  }} 
+                  onSave={() => {
+                    setIsModalOpen(false);
+                    navigate('/orcamentos');
+                    toast.success('Orçamento criado com sucesso!');
+                    refetch();
+                  }}
+                />
               </div>
             </div>
           </DialogContent>
