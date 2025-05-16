@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams, useNavigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Login from "@/pages/Login";
@@ -23,7 +23,17 @@ import GerenciamentoUsuarios from "@/pages/GerenciamentoUsuarios";
 // Wrapper for DetalhesOrcamento that gets id from params
 const DetalhesOrcamentoWrapper = () => {
   const { id = "" } = useParams();
-  return <DetalhesOrcamento id={id} open={true} onOpenChange={() => {}} />;
+  const navigate = useNavigate();
+  
+  return (
+    <DetalhesOrcamento 
+      id={id} 
+      open={true} 
+      onOpenChange={(open) => {
+        if (!open) navigate('/orcamentos');
+      }} 
+    />
+  );
 };
 
 const queryClient = new QueryClient();

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +13,8 @@ import { Badge } from '@/components/ui/badge';
 import OrcamentoForm from '@/components/OrcamentoForm';
 import { orcamentoService } from '@/services/orcamentoService';
 import { clienteService } from '@/services/clienteService';
-import { OrcamentoPDFHeader } from '@/components/OrcamentoPDF/OrcamentoPDFHeader';
+import { OrcamentoPDFDocument } from '@/components/OrcamentoPDF/OrcamentoPDFDocument';
+import '@/components/OrcamentoPDF/OrcamentoPDF.css';
 
 interface DetalhesOrcamentoProps {
   id: string;
@@ -59,6 +59,13 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
 
   const handlePrintPreview = () => {
     setIsPrintPreview(true);
+  };
+
+  const handlePrint = () => {
+    // Adicione um delay pequeno para garantir que o DOM foi atualizado
+    setTimeout(() => {
+      window.print();
+    }, 100);
   };
 
   const formatarData = (dataString?: string) => {
@@ -115,26 +122,13 @@ export default function DetalhesOrcamento({ id, open, onOpenChange }: DetalhesOr
               >
                 Voltar
               </Button>
-              <Button onClick={() => window.print()}>
+              <Button onClick={handlePrint}>
                 <Printer className="mr-2 h-4 w-4" />
                 Imprimir
               </Button>
             </div>
-            <div className="max-w-4xl mx-auto bg-white p-8 shadow-sm border print:shadow-none print:border-none">
-              <OrcamentoPDFHeader
-                numeroDoPedido={id}
-                data={formatarData(orcamento.data)}
-                clienteNome={cliente?.nome || 'Cliente não encontrado'}
-                veiculo={orcamento.veiculo}
-                placa={orcamento.placa}
-                chassi={orcamento.chassi}
-              />
-              
-              {/* Conteúdo adicional do PDF será adicionado aqui */}
-              <div className="mt-8">
-                <h2 className="text-xl font-bold mb-4">Detalhes do Orçamento</h2>
-                {/* Detalhes e itens do orçamento serão adicionados nas próximas etapas */}
-              </div>
+            <div className="print-container">
+              <OrcamentoPDFDocument orcamento={orcamento} cliente={cliente} />
             </div>
           </div>
         </DialogContent>

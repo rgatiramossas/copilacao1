@@ -56,7 +56,7 @@ export interface Orcamento {
   dataAprovacao?: string;
 }
 
-// Novas interfaces para o sistema de orçamentos detalhados
+// Interfaces para o sistema de orçamentos detalhados
 export interface DanoVeiculo {
   pecaId: string;
   amassados: {
